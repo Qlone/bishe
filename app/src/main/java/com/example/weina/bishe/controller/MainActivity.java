@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
@@ -49,15 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         //内容
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//
-//        mRecyclerView.setLayoutManager(layoutManager);
+
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
 //        staggeredGridLayoutManager.setAutoMeasureEnabled(true);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
 //        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setNestedScrollingEnabled(false);
         /**
          * 设置分割线
          */
@@ -69,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
          * 添加 recyclerview头
          */
 //        mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
-//        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
-//        mRecyclerView.addHeaderView(header);
+        View header =   LayoutInflater.from(this).inflate(R.layout.mian_content_head, (ViewGroup)findViewById(android.R.id.content),false);
+        mRecyclerView.addHeaderView(header);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         listData.clear();
                         for(int i = 0; i < 15 ;i++){
-                            listData.add("item" + i + "after " + refreshTime + " times of refresh");
+                            listData.add("item" + i + "after " + refreshTime + " times of refreshhahahahahahahahahahahahahahahahahahahahahahahaha");
                         }
                         HomeService.getContent();
                         mAdapter.notifyDataSetChanged();
