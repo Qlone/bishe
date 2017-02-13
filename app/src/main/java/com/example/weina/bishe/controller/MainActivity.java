@@ -1,5 +1,6 @@
 package com.example.weina.bishe.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<GoodsRoughBean.GoodsBean> listData;
     private static Handler mhandler;
 
+    //底部按钮
+    private ImageButton mMeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -121,6 +125,16 @@ public class MainActivity extends AppCompatActivity {
         };
         //第一次打开获取数据
         HomeService.getContent(listData);
+        //底部按钮
+        mMeButton = (ImageButton)findViewById(R.id.home_me_button);
+        mMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ScrollingActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public static Handler getHandle(){

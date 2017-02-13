@@ -1,4 +1,4 @@
-package com.example.weina.bishe;
+package com.example.weina.bishe.controller;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -7,16 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.weina.bishe.adapter.HomeAdapter;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
-
-import java.util.ArrayList;
+import com.example.weina.bishe.R;
 
 public class ScrollingActivity extends AppCompatActivity {
-    private XRecyclerView mRecyclerView;
-    private HomeAdapter mAdapter;
-    private ArrayList<String> listData;
-    private int refreshTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

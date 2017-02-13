@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScrollingActivity"
+        <activity android:name=".controller.ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="main"></activity>
     </application>
