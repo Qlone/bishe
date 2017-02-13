@@ -37,9 +37,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
         viewHolder.mItemSales.setText(datas.get(position).getSales()+"人付款");
         viewHolder.mItemPrice.setText("￥ "+datas.get(position).getPrice());
-        if(null ==datas.get(position).getBitmap()){
+        if(null ==datas.get(position).getBitmap() && true !=  datas.get(position).isDownloading()){
             Log.d("搜索图片 请求id ：",""+position);
+            datas.get(position).setDownloading(true);
             HomeService.getPicture(datas.get(position),position);
+        }
+        if(null !=datas.get(position).getType()) {
+            switch (datas.get(position).getType()) {
+                case "hot":
+                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.hot);
+                    break;
+                case "recommend":
+                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
+                    break;
+            }
         }
     }
 
@@ -54,12 +65,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         public TextView mItemPrice;
         public TextView mItemSales;
         public ImageView mItemPicture;
+        public ImageView mItemTypes;
         public ViewHolder(View view){
             super(view);
             mItemTitle = (TextView) view.findViewById(R.id.item_title);
             mItemPrice = (TextView) view.findViewById(R.id.item_price);
             mItemSales = (TextView) view.findViewById(R.id.item_sales);
             mItemPicture = (ImageView)view.findViewById(R.id.item_img);
+            mItemTypes = (ImageView)view.findViewById(R.id.item_type);
         }
     }
 }

@@ -3,14 +3,22 @@
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:src="@drawable/login_wait"
         android:id="@+id/item_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"/>
+        <ImageView
+            android:id="@+id/item_type"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center" />
+    </RelativeLayout>
     <TextView
         android:id="@+id/item_title"
         android:textSize="15sp"

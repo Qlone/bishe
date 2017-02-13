@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         /**
          * 设置分割线
          */
-        SpacesItemDecoration decoration=new SpacesItemDecoration(13);
+        SpacesItemDecoration decoration=new SpacesItemDecoration(8);
         mRecyclerView.addItemDecoration(decoration);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);

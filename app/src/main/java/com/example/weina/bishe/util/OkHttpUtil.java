@@ -250,7 +250,10 @@ public class OkHttpUtil {
 //                }
 //            });
 //        }
-        callback.onSuccess(data);
+        if(null !=callback){
+            callback.onSuccess(data);
+        }
+
     }
     private void onSuccess(final HttpCallback callback, final InputStream data) {
 
@@ -263,7 +266,9 @@ public class OkHttpUtil {
 //                }
 //            });
 //        }
-        callback.onSuccess(data);
+        if(null != callback){
+            callback.onSuccess(data);
+        }
     }
 
     private void onError(final HttpCallback callback,final String msg) {

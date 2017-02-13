@@ -19,11 +19,20 @@ public class GoodsRoughBean {
     }
 
     public static class GoodsBean {
+        public boolean isDownloading() {
+            return downloading;
+        }
+
+        public void setDownloading(boolean downloading) {
+            this.downloading = downloading;
+        }
+
         /**
          * type : hot
          * picture : http://**
          * title : nick
          * price : 10
+
          * sales : 11
          */
 
@@ -33,7 +42,7 @@ public class GoodsRoughBean {
         private Bitmap bitmap;
         private double price;
         private int sales;
-
+        private boolean downloading = false;
         public String getType() {
             return type;
         }
