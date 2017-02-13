@@ -1,5 +1,7 @@
 package com.example.weina.bishe.bean;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 /**
@@ -28,11 +30,20 @@ public class GoodsRoughBean {
         private String type;
         private String picture;
         private String title;
+        private Bitmap bitmap;
         private double price;
         private int sales;
 
         public String getType() {
             return type;
+        }
+
+        public Bitmap getBitmap() {
+            return bitmap;
+        }
+
+        public void setBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
         }
 
         public void setType(String type) {

@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -157,7 +158,7 @@ public class OkHttpUtil {
      * @param url
      * @param callback
      */
-    public void get(String url, final HttpCallback callback) {
+    public void getStream(String url, final HttpCallback callback) {
 
         Request request = new Request.Builder().url(url).build();
 
@@ -169,7 +170,7 @@ public class OkHttpUtil {
             public void onResponse(Call call,Response response) throws IOException {
                 // TODO Auto-generated method stub
                 if (response.isSuccessful()) {
-                    onSuccess(callback, response.body().string());
+                    onSuccess(callback, response.body().byteStream());
                 } else {
                     onError(callback, response.message());
                 }
@@ -187,6 +188,34 @@ public class OkHttpUtil {
 
     }
 
+    public void get(String url, final HttpCallback callback) {
+
+        Request request = new Request.Builder().url(url).build();
+
+        onStart(callback);
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // TODO Auto-generated method stub
+                if (response.isSuccessful()) {
+                    onSuccess(callback, response.body().string());
+                } else {
+                    onError(callback, response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException arg1) {
+                // TODO Auto-generated method stub
+
+                onError(callback, arg1.getMessage());
+                arg1.printStackTrace();
+
+            }
+        });
+    }
     /**
      * log信息打印
      * @param params
@@ -213,14 +242,28 @@ public class OkHttpUtil {
 
         debug(data);
 
-        if (null != callback) {
-            handler.post(new Runnable() {
-                public void run() {
-                    // 需要在主线程的操作。
-                    callback.onSuccess(data);
-                }
-            });
-        }
+//        if (null != callback) {
+//            handler.post(new Runnable() {
+//                public void run() {
+//                    // 需要在主线程的操作。
+//
+//                }
+//            });
+//        }
+        callback.onSuccess(data);
+    }
+    private void onSuccess(final HttpCallback callback, final InputStream data) {
+
+
+//        if (null != callback) {
+//            handler.post(new Runnable() {
+//                public void run() {
+//                    // 需要在主线程的操作。
+//                    callback.onSuccess(data);
+//                }
+//            });
+//        }
+        callback.onSuccess(data);
     }
 
     private void onError(final HttpCallback callback,final String msg) {
@@ -247,6 +290,8 @@ public class OkHttpUtil {
 
         // 成功回调
         public abstract void onSuccess(String data);
+
+        public abstract void onSuccess(InputStream data);
 
         // 失败回调
         public void onError(String msg) {};

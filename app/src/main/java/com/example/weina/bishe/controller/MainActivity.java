@@ -2,6 +2,7 @@ package com.example.weina.bishe.controller;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
-import com.example.weina.bishe.service.HomeService;
+import com.example.weina.bishe.bean.GoodsRoughBean;
+import com.example.weina.bishe.service.IHomeService;
+import com.example.weina.bishe.service.serviceImpl.HomeService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -25,8 +28,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private XRecyclerView mRecyclerView;
     private HomeAdapter mAdapter;
-    private ArrayList<String> listData;
-    private int refreshTime = 0;
+    private ArrayList<GoodsRoughBean.GoodsBean> listData;
+    private static Handler mhandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -73,28 +77,18 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                refreshTime ++;
-                new Handler().postDelayed(new Runnable(){
+                new Handler().post(new Runnable(){
                     public void run() {
-                        listData.clear();
-                        for(int i = 0; i < 15 ;i++){
-                            listData.add("item" + i + "after " + refreshTime + " times of refreshhahahahahahahahahahahahahahahahahahahahahahahaha");
-                        }
-                        HomeService.getContent();
-                        mAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplete();
+                        HomeService.getContent(listData);
                     }
 
-                }, 3000);            //refresh data here
+                });            //refresh data here
             }
 
             @Override
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
-                        for(int i = 0; i < 15 ;i++){
-                            listData.add("item" + (i + listData.size()) );
-                        }
                         mAdapter.notifyDataSetChanged();
                         mRecyclerView.loadMoreComplete();
                     }
@@ -103,12 +97,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listData = new ArrayList<String>();
+        listData = new ArrayList<>();
         mAdapter = new HomeAdapter(listData);
-        for(int i = 0; i < 15 ;i++){
-            listData.add("item" + i);
-        }
         mRecyclerView.setAdapter(mAdapter);
+
+
+        mhandler = new Handler(){
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case IHomeService.UPDATE_OVER: {
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.refreshComplete();
+                        break;
+                    }
+                    case IHomeService.POSITION_MSG:{
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.refreshComplete();
+                        break;
+                    }
+                }
+                super.handleMessage(msg);
+            }
+        };
+        //第一次打开获取数据
+        HomeService.getContent(listData);
+    }
+
+    public static Handler getHandle(){
+        return mhandler;
     }
 
 }
