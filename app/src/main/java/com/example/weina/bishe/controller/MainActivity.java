@@ -103,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
         listData = new ArrayList<>();
         mAdapter = new HomeAdapter(listData);
+        //设置 监听 ****************************
+        mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(MainActivity.this,GoodDetailActivity.class);
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
 

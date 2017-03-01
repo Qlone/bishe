@@ -21,6 +21,9 @@
         <activity android:name=".controller.ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="main"></activity>
+        <activity android:name=".controller.GoodDetailActivity"
+            android:theme="@style/AppThemeFull.NoActionBar"
+            android:label="main"></activity>
     </application>
 
 </manifest>

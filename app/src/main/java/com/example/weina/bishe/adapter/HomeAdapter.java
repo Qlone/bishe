@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public ArrayList<GoodsRoughBean.GoodsBean> datas = null;
+    public OnItemClickListener mLicense= null;
     public HomeAdapter(ArrayList<GoodsRoughBean.GoodsBean> datas) {
         this.datas = datas;
     }
@@ -30,7 +31,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(HomeAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final HomeAdapter.ViewHolder viewHolder, int position) {
         viewHolder.mItemTitle.setText( datas.get(position).getTitle());
         if(null !=datas.get(position).getBitmap()) {
             viewHolder.mItemPicture.setImageBitmap(datas.get(position).getBitmap());
@@ -51,6 +52,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
                     break;
             }
+        }
+
+        //若回调，则设置点击事件
+        if(mLicense != null){
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = viewHolder.getLayoutPosition();
+                    mLicense.onItemClick(viewHolder.itemView,pos);
+                }
+            });
         }
     }
 
@@ -74,5 +86,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             mItemPicture = (ImageView)view.findViewById(R.id.item_img);
             mItemTypes = (ImageView)view.findViewById(R.id.item_type);
         }
+
+    }
+
+    //设置接口
+    public interface OnItemClickListener{
+        void onItemClick(View view,int position);
+    }
+    //监听器
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
+        this.mLicense = mOnItemClickListener;
     }
 }

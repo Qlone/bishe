@@ -20,8 +20,9 @@ import java.util.ArrayList;
  * Created by weina on 2017/2/11.
  */
 public class HomeService implements IHomeService{
-    private static OkHttpUtil mOkHttpUtil = new OkHttpUtil();;
-    private static final String url = "http://192.168.31.249:8080/gson";
+    private static OkHttpUtil mOkHttpUtil = new OkHttpUtil();
+    //192.168.31.249
+    private static final String url = "http://121.42.173.155/1.0.0/gson";
     HomeService(){
     }
 

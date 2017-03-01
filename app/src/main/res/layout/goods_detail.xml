@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".controller.GoodDetailActivity"
+    android:layout_height="match_parent"
+    tool:context=".controller.GoodDetailActivity">
+
+    <LinearLayout
+        android:id="@+id/detail_bottom"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:text="cart"
+            android:textSize="15sp"
+            android:background="#ffb52b"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+        <Button
+            android:text="buy"
+            android:textSize="15sp"
+            android:background="#ff171f"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+        ></LinearLayout>
+
+    <LinearLayout
+        android:layout_above="@id/detail_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:src="@drawable/login_wait"
+            android:scaleType="centerInside"
+            android:paddingBottom="1dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" 小米麦旋风限时出售巴拉巴拉巴拉"
+            android:textStyle="bold"
+            android:textColor="#2b2a2a"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:padding="10dp"
+            android:textSize="22sp"/>
+    </LinearLayout>
+
+</RelativeLayout>
