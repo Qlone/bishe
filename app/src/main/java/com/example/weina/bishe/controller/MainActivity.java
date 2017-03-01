@@ -18,6 +18,7 @@ import com.example.weina.bishe.bean.GoodsRoughBean;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.serviceImpl.HomeService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
+import com.example.weina.bishe.util.view.LoginDialog;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     //底部按钮
     private ImageButton mMeButton;
+    private ImageButton mHomeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -140,6 +142,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,ScrollingActivity.class);
                 startActivity(intent);
+            }
+        });
+        mHomeButton = (ImageButton)findViewById(R.id.home_home_button);
+        mHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginDialog loginDialog = new LoginDialog(MainActivity.this);
+                loginDialog.show();
             }
         });
 

@@ -72,7 +72,6 @@ public class OkHttpUtil {
             @Override
             public void onResponse(Call call,Response response) throws IOException {
                 // TODO Auto-generated method stub
-
                 if (response.isSuccessful()) {
                     onSuccess(callback, response.body().string());
                 } else {

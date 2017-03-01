@@ -37,11 +37,13 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
            <ImageButton
+               android:id="@+id/home_home_button"
                android:background="@drawable/home_button"
                android:layout_width="51dp"
                android:scaleType="centerCrop"
                android:layout_height="wrap_content" />
             <TextView
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />

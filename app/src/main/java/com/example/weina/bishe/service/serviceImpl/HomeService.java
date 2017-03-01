@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.os.Message;
 
 import com.example.weina.bishe.bean.GoodsRoughBean;
+import com.example.weina.bishe.bean.GsonLogin;
 import com.example.weina.bishe.controller.MainActivity;
+import com.example.weina.bishe.entity.UserEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.util.FlushedInputStream;
+import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
 
@@ -21,6 +24,11 @@ import java.util.ArrayList;
  */
 public class HomeService implements IHomeService{
     private static OkHttpUtil mOkHttpUtil = new OkHttpUtil();
+
+    public static OkHttpUtil getmOkHttpUtil() {
+        return mOkHttpUtil;
+    }
+
     //192.168.31.249
     private static final String url = "http://121.42.173.155/1.0.0/gson";
     HomeService(){
@@ -77,4 +85,22 @@ public class HomeService implements IHomeService{
         }
     }
 
+    public static void login(){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName("first");
+        userEntity.setPassword("asd");
+        GsonLogin gsonLogin = new GsonLogin();
+        gsonLogin.setUserEntity(userEntity);
+        mOkHttpUtil.postJson("http://192.168.137.1:8080/user/login", JsonUtil.toJson(gsonLogin), new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data) {
+                System.out.print(data);
+            }
+
+            @Override
+            public void onSuccess(InputStream data) {
+
+            }
+        });
+    }
 }
