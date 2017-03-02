@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDarkFull">#779f9f9f</color>
+    <color name="colorPrimaryDarkFull">#b4000000</color>
+    <color name="loginText">#2b2a2a</color>
     <color name="colorPrimary">#ffa414</color>
     <color name="colorPrimaryDark">#ffa414</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="red">#ff2a2a</color>
     <color name="white">#ffffff</color>
+    <color name="whites">#ffffff</color>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,9 @@ import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
 import com.example.weina.bishe.bean.GoodsRoughBean;
 import com.example.weina.bishe.service.IHomeService;
+import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.HomeService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
-import com.example.weina.bishe.util.view.LoginDialog;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -148,15 +149,18 @@ public class MainActivity extends AppCompatActivity {
         mHomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginDialog loginDialog = new LoginDialog(MainActivity.this);
-                loginDialog.show();
+                if(null != BaseUserService.getInstatnce()) {
+                    BaseUserService.getInstatnce().checkUser(MainActivity.this);
+                }else {
+                    Log.w("警告","空指针");
+                }
             }
         });
 
     }
 
     public static Handler getHandle(){
-        return mhandler;
+       return mhandler;
     }
 
 }

@@ -16,6 +16,13 @@ public class UserEntity {
     private String userStatus;
     private Double balance;
 
+    public UserEntity(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public UserEntity() {
+    }
 
     public Integer getUserId() {
         return userId;
