@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        mSearchButton=(ImageButton)header.findViewById(R.id.home_search_button);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

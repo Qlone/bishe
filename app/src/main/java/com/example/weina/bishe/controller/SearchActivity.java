@@ -1,6 +1,8 @@
 package com.example.weina.bishe.controller;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -9,6 +11,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.weina.bishe.R;
+import com.example.weina.bishe.entity.LableEntity;
+import com.example.weina.bishe.service.serviceImpl.SearchService;
 import com.example.weina.bishe.util.view.SearchView;
 
 import java.util.ArrayList;
@@ -43,7 +47,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
      * 热搜版数据
      */
     private List<String> hintData;
-
     /**
      * 搜索过程中自动补全数据
      */
@@ -52,13 +55,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
     /**
      * 默认提示框显示项的个数
      */
-    private static int DEFAULT_HINT_SIZE = 4;
+    public static int DEFAULT_HINT_SIZE = 6;
 
     /**
      * 提示框显示项的个数
      */
     private static int hintSize = DEFAULT_HINT_SIZE;
 
+    private Handler handler = new Handler(Looper.getMainLooper());
     /**
      * 设置提示框显示项的个数
      *
@@ -120,22 +124,36 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
             //初始化
             autoCompleteData = new ArrayList<>(hintSize);
         } else {
-//            // 根据text 获取auto data
-//            autoCompleteData.clear();
-//            for (int i = 0, count = 0; i < dbData.size()
-//                    && count < hintSize; i++) {
-//                if (dbData.get(i).getTitle().contains(text.trim())) {
-//                    autoCompleteData.add(dbData.get(i).getTitle());
-//                    count++;
-//                }
-//            }
+            // 根据text 获取auto data
+            autoCompleteData.clear();
+            SearchService.getHintLable(text, new SearchService.HintDataCallback() {
+                @Override
+                public void callback(List<LableEntity> lableList) {
+                    List<String> res = new ArrayList<String>();
+                    for(LableEntity list:lableList){
+                        autoCompleteData.add(list.getText());
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (null == autoCompleteAdapter) {
+                                autoCompleteAdapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, autoCompleteData);
+                            } else {
+                                autoCompleteAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                }
+            });
         }
-        if (autoCompleteAdapter == null) {
-            autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteData);
+        if (null == autoCompleteAdapter) {
+            autoCompleteAdapter = new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_list_item_1, autoCompleteData);
         } else {
             autoCompleteAdapter.notifyDataSetChanged();
         }
     }
+
+
 
 
 

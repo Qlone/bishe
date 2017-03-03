@@ -38,7 +38,7 @@ public class HomeService implements IHomeService{
     }
 
     public static void getContent(final ArrayList<GoodsEntity> datas){
-        String url = StaticString.URL+"/good/list/s?page=1&lines=3";
+        String url = StaticString.URL+"/good/list?page=1&lines=3";
         mOkHttpUtil.get(url, new OkHttpUtil.HttpCallback() {
             @Override
             public void onSuccess(String data) {

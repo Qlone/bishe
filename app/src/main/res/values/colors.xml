@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDarkFull">#b4000000</color>
+    <color name="colorPrimaryDarkFull">#ffa414</color>
     <color name="loginText">#2b2a2a</color>
     <color name="colorPrimary">#ffa414</color>
     <color name="colorPrimaryDark">#ffa414</color>
@@ -11,6 +11,6 @@
     <color name="myred">#eb4f38</color>
     <color name="darkgray">#cccc</color>
     <color name="color_white">#ffffff</color>
-    <color name="btn_press_color">#5677fc</color>
-    <color name="btn_pressed_color">#3ca0ec</color>
+    <color name="btn_press_color">#20e7e7e7</color>
+    <color name="btn_pressed_color">#47ffffff</color>
 </resources>
