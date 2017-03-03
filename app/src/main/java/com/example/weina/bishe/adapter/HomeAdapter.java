@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weina.bishe.R;
-import com.example.weina.bishe.bean.GoodsRoughBean;
+import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.serviceImpl.HomeService;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import java.util.ArrayList;
  * Created by weina on 2017/2/11.
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
-    public ArrayList<GoodsRoughBean.GoodsBean> datas = null;
+    public ArrayList<GoodsEntity> datas = null;
     public OnItemClickListener mLicense= null;
-    public HomeAdapter(ArrayList<GoodsRoughBean.GoodsBean> datas) {
+    public HomeAdapter(ArrayList<GoodsEntity> datas) {
         this.datas = datas;
     }
     @Override
@@ -43,8 +43,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             datas.get(position).setDownloading(true);
             HomeService.getPicture(datas.get(position),position);
         }
-        if(null !=datas.get(position).getType()) {
-            switch (datas.get(position).getType()) {
+        if(null !=datas.get(position).getStatus()) {
+            switch (datas.get(position).getStatus()) {
                 case "hot":
                     viewHolder.mItemTypes.setBackgroundResource(R.drawable.hot);
                     break;

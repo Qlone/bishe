@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
-import com.example.weina.bishe.bean.GoodsRoughBean;
+import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.HomeService;
@@ -32,12 +32,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private XRecyclerView mRecyclerView;
     private HomeAdapter mAdapter;
-    private ArrayList<GoodsRoughBean.GoodsBean> listData;
+    private ArrayList<GoodsEntity> listData;
     private static Handler mhandler;
 
     //底部按钮
     private ImageButton mMeButton;
     private ImageButton mHomeButton;
+    //
+    private ImageButton mSearchButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -154,6 +156,14 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     Log.w("警告","空指针");
                 }
+
+            }
+        });
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent);
             }
         });
 

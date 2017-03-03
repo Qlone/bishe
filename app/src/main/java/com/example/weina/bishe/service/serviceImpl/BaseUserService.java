@@ -70,7 +70,7 @@ public class BaseUserService implements IBaseUserService{
     }
 
     private boolean login(final UserEntity userEntity, final Context context) {
-        String url = StaticString.URL+"user/login";
+        String url = StaticString.URL+"/user/login";
         final GsonLogin gsonLogin = new GsonLogin();
         gsonLogin.setUserEntity(userEntity);
         //发送 登录请求
