@@ -35,8 +35,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final HomeAdapter.ViewHolder viewHolder, int position) {
         viewHolder.mItemTitle.setText( datas.get(position).getTitle());
-        if(null !=datas.get(position).getBitmap()) {
+        if(null != datas.get(position).getBitmap()) {
             viewHolder.mItemPicture.setImageBitmap(datas.get(position).getBitmap());
+        }else {
+            viewHolder.mItemPicture.setImageResource(R.drawable.login_wait);
         }
         viewHolder.mItemSales.setText(datas.get(position).getSales()+"人付款");
         viewHolder.mItemPrice.setText("￥ "+datas.get(position).getPrice());

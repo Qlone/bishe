@@ -7,6 +7,7 @@ import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.entity.LableEntity;
 import com.example.weina.bishe.service.ISearchService;
 import com.example.weina.bishe.service.StaticString;
+import com.example.weina.bishe.util.GoodsManager;
 import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
@@ -87,7 +88,7 @@ public class SearchService implements ISearchService{
     }
 
     public static void searchGoodByTitle(final ArrayList<GoodsEntity> datas,String title){
-        String url = StaticString.URL +"/good/search?title"+title+"&page="+SearchActivity.getPage()+"&lines=6";
+        String url = StaticString.URL +"/good/search?title="+title+"&page="+SearchActivity.getPage()+"&lines=8";
         HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
             @Override
             public void onSuccess(String data) {
@@ -95,10 +96,12 @@ public class SearchService implements ISearchService{
                     Gson gson = new Gson();
                     List<GoodsEntity> testBean = gson.fromJson(data,new TypeToken<List<GoodsEntity>>(){}.getType());
                     if(null != testBean) {
-                        datas.addAll(testBean);
                         if(SearchActivity.getPage() == 1){
+                            GoodsManager.clear(datas);
+                            datas.addAll(testBean);
                             SearchActivity.getHandler().sendEmptyMessage(UPDATE_OVER);
                         }else {
+                            datas.addAll(testBean);
                             SearchActivity.getHandler().sendEmptyMessage(LOAD_OVER);
                         }
                         SearchActivity.setPage(SearchActivity.getPage()+1);

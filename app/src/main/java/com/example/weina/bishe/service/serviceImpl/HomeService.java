@@ -13,6 +13,7 @@ import com.example.weina.bishe.entity.UserEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.StaticString;
 import com.example.weina.bishe.util.FlushedInputStream;
+import com.example.weina.bishe.util.GoodsManager;
 import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
@@ -39,7 +40,7 @@ public class HomeService implements IHomeService{
     }
 
     public static void getContent(final ArrayList<GoodsEntity> datas){
-        String url = StaticString.URL+"/good/list?page="+MainActivity.getPage()+"&lines=6";
+        String url = StaticString.URL+"/good/list?page="+MainActivity.getPage()+"&lines=8";
         mOkHttpUtil.get(url, new OkHttpUtil.HttpCallback() {
             @Override
             public void onSuccess(String data) {
@@ -47,10 +48,12 @@ public class HomeService implements IHomeService{
                     Gson gson = new Gson();
                     List<GoodsEntity> testBean = gson.fromJson(data,new TypeToken<List<GoodsEntity>>(){}.getType());
                     if(null != testBean) {
-                        datas.addAll(testBean);
                         if(MainActivity.getPage() == 1){
+                            GoodsManager.clear(datas);
+                            datas.addAll(testBean);
                             MainActivity.getHandle().sendEmptyMessage(UPDATE_OVER);
                         }else {
+                            datas.addAll(testBean);
                             MainActivity.getHandle().sendEmptyMessage(LOAD_OVER);
                         }
                         MainActivity.setPage(MainActivity.getPage()+1);

@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 new Handler().post(new Runnable(){
                     public void run() {
-                        listData.clear();
                         page =1;
                         HomeService.getContent(listData);
                     }

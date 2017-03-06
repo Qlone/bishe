@@ -6,10 +6,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
@@ -22,6 +20,7 @@ import com.example.weina.bishe.util.view.SearchView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +141,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         lvResults.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                listData.clear();
                 page=1;
                 SearchService.searchGoodByTitle(listData,title);
             }
@@ -255,16 +253,37 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
 
     @Override
     public void onSearch(String text) {
-
-        lvResults.setVisibility(View.VISIBLE);
-        //第一次获取结果 还未配置适配器
-        if (lvResults.getAdapter() == null) {
-
-        } else {
-
-        }
-        Toast.makeText(this, "完成搜素", Toast.LENGTH_SHORT).show();
         SearchService.searchLable(text);
+        listData.clear();
+        page=1;
+        title = text;
+        //重置 view 使得重新搜索后可以加载更多
+        recyclViewReset();
+        SearchService.searchGoodByTitle(listData,text);
+
+
+    }
+
+    private void recyclViewReset(){
+        try {
+            //反射改变变量
+            Field field = lvResults.getClass().getDeclaredField("isnomore");
+            Field field2 = lvResults.getClass().getDeclaredField("previousTotal");
+            Field field3 = lvResults.getClass().getDeclaredField("mLastY");
+            field.setAccessible(true);
+            field2.setAccessible(true);
+            field3.setAccessible(true);
+
+
+            field.set(lvResults,false);
+            field2.set(lvResults,0);
+            field3.set(lvResults,-1);
+
+        }catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
     public static int getPage() {
