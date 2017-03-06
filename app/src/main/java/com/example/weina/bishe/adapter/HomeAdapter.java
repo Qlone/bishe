@@ -1,5 +1,6 @@
 package com.example.weina.bishe.adapter;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public ArrayList<GoodsEntity> datas = null;
     public OnItemClickListener mLicense= null;
+    public Handler mHandler =null;
     public HomeAdapter(ArrayList<GoodsEntity> datas) {
         this.datas = datas;
     }
@@ -41,7 +43,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         if(null ==datas.get(position).getBitmap() && true !=  datas.get(position).isDownloading()){
             Log.d("搜索图片 请求id ：",""+position);
             datas.get(position).setDownloading(true);
-            HomeService.getPicture(datas.get(position),position);
+            HomeService.getPicture(datas.get(position),position,mHandler);
         }
         if(null !=datas.get(position).getStatus()) {
             switch (datas.get(position).getStatus()) {
@@ -51,7 +53,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 case "recommend":
                     viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
                     break;
+                default:
+                    viewHolder.mItemTypes.setBackgroundResource(0);
             }
+        }
+        else {
+            viewHolder.mItemTypes.setBackgroundResource(0);
         }
 
         //若回调，则设置点击事件
@@ -87,6 +94,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             mItemTypes = (ImageView)view.findViewById(R.id.item_type);
         }
 
+    }
+
+    public Handler getHandler() {
+        return mHandler;
+    }
+
+    public void setHandler(Handler handler) {
+        mHandler = handler;
     }
 
     //设置接口

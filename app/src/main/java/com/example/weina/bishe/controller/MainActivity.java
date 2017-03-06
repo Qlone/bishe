@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeAdapter mAdapter;
     private ArrayList<GoodsEntity> listData;
     private static Handler mhandler;
-
+    private static int page;
     //底部按钮
     private ImageButton mMeButton;
     private ImageButton mHomeButton;
@@ -83,11 +83,15 @@ public class MainActivity extends AppCompatActivity {
 //        mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
         View header =   LayoutInflater.from(this).inflate(R.layout.mian_content_head, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
+        //初始化 页面
+        page= 1;
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 new Handler().post(new Runnable(){
                     public void run() {
+                        listData.clear();
+                        page =1;
                         HomeService.getContent(listData);
                     }
 
@@ -96,12 +100,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable(){
+                new Handler().post(new Runnable(){
                     public void run() {
-                        mAdapter.notifyDataSetChanged();
-                        mRecyclerView.loadMoreComplete();
+                        HomeService.getContent(listData);
+
                     }
-                }, 3000);
+                });
 
             }
         });
@@ -127,15 +131,19 @@ public class MainActivity extends AppCompatActivity {
                         mRecyclerView.refreshComplete();
                         break;
                     }
+                    case IHomeService.LOAD_OVER:{
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.loadMoreComplete();
+                    }
                     case IHomeService.POSITION_MSG:{
                         mAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplete();
                         break;
                     }
                 }
                 super.handleMessage(msg);
             }
         };
+        mAdapter.setHandler(mhandler);
         //第一次打开获取数据
         HomeService.getContent(listData);
         //底部按钮
@@ -168,6 +176,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static int getPage() {
+        return page;
+    }
+
+    public static void setPage(int page) {
+        MainActivity.page = page;
     }
 
     public static Handler getHandle(){

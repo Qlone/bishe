@@ -3,6 +3,7 @@ package com.example.weina.bishe.service.serviceImpl;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 
 import com.example.weina.bishe.bean.GsonLogin;
@@ -38,21 +39,31 @@ public class HomeService implements IHomeService{
     }
 
     public static void getContent(final ArrayList<GoodsEntity> datas){
-        String url = StaticString.URL+"/good/list?page=1&lines=3";
+        String url = StaticString.URL+"/good/list?page="+MainActivity.getPage()+"&lines=6";
         mOkHttpUtil.get(url, new OkHttpUtil.HttpCallback() {
             @Override
             public void onSuccess(String data) {
                 if(null != data){
                     Gson gson = new Gson();
                     List<GoodsEntity> testBean = gson.fromJson(data,new TypeToken<List<GoodsEntity>>(){}.getType());
-                    datas.clear();
-                    datas.addAll(testBean);
+                    if(null != testBean) {
+                        datas.addAll(testBean);
+                        if(MainActivity.getPage() == 1){
+                            MainActivity.getHandle().sendEmptyMessage(UPDATE_OVER);
+                        }else {
+                            MainActivity.getHandle().sendEmptyMessage(LOAD_OVER);
+                        }
+                        MainActivity.setPage(MainActivity.getPage()+1);
+                    }else {
+                        if(MainActivity.getPage() == 1){
+                            MainActivity.getHandle().sendEmptyMessage(UPDATE_OVER);
+                        }else {
+                            MainActivity.getHandle().sendEmptyMessage(LOAD_OVER);
+                        }
+                    }
                 }else{
                     System.out.println("no messsage !!!!!!!");
                 }
-
-
-                MainActivity.getHandle().sendEmptyMessage(UPDATE_OVER);
             }
 
             @Override
@@ -61,7 +72,7 @@ public class HomeService implements IHomeService{
             }
         });
     }
-    public static void getPicture(final GoodsEntity goodsEntity, final int position){
+    public static void getPicture(final GoodsEntity goodsEntity, final int position, final Handler handler){
         if(null != goodsEntity.getPicture()) {
             mOkHttpUtil.getStream(goodsEntity.getPicture(), new OkHttpUtil.HttpCallback() {
                 @Override
@@ -83,7 +94,7 @@ public class HomeService implements IHomeService{
                     Bundle bundle = new Bundle();
                     bundle.putInt(POSITION_FLAG, position);
                     msg.what = POSITION_MSG;
-                    MainActivity.getHandle().sendMessage(msg);
+                    handler.sendMessage(msg);
                 }
             });
         }

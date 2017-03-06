@@ -10,11 +10,10 @@
         android:layout_height="wrap_content">
 
     </com.example.weina.bishe.util.view.SearchView>
-    <ListView
-        android:visibility="gone"
-        android:id="@+id/main_lv_search_results"
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/search_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </ListView>
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
 </LinearLayout>
