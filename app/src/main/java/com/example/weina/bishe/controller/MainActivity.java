@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<GoodsEntity> listData;
     private static Handler mhandler;
     private static int page;
+    public static final String GOOD_BUNDLE = "good_bundle";
     //底部按钮
     private ImageButton mMeButton;
     private ImageButton mHomeButton;
@@ -115,7 +116,10 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(MainActivity.this,GoodDetailActivity.class);
+                Log.d(" 标记",""+position);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,GoodDetailActivity.class);
+                intent.putExtra(GOOD_BUNDLE,listData.get(position-2));
                 startActivity(intent);
             }
         });

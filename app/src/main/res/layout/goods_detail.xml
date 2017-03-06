@@ -34,12 +34,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <ImageView
+            android:id="@+id/good_detail_img"
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:src="@drawable/login_wait"
             android:scaleType="centerInside"
             android:paddingBottom="1dp" />
         <TextView
+            android:id="@+id/good_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=" 小米麦旋风限时出售巴拉巴拉巴拉"

@@ -9,11 +9,13 @@
 package com.example.weina.bishe.entity;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by weina on 2017/3/2.
  */
-public class GoodsEntity {
+public class GoodsEntity implements Parcelable {
     private Integer goodsId;
     private String type;
     private Double price;
@@ -23,7 +25,7 @@ public class GoodsEntity {
     private Integer stock;
     private String status;
     private Integer views;
-    private Integer delete;
+    private Integer goodsDelete;
     private Bitmap bitmap;
     private boolean downloading = false;
 
@@ -35,12 +37,12 @@ public class GoodsEntity {
         this.type = type;
     }
 
-    public Integer getDelete() {
-        return delete;
+    public Integer getGoodsDelete() {
+        return goodsDelete;
     }
 
-    public void setDelete(Integer delete) {
-        this.delete = delete;
+    public void setGoodsDelete(Integer goodsDelete) {
+        this.goodsDelete = goodsDelete;
     }
 
     public Bitmap getBitmap() {
@@ -132,45 +134,72 @@ public class GoodsEntity {
         this.views = views;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        GoodsEntity that = (GoodsEntity) o;
-
-        if (goodsId != null ? !goodsId.equals(that.goodsId) : that.goodsId != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (price != null ? !price.equals(that.price) : that.price != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (picture != null ? !picture.equals(that.picture) : that.picture != null) return false;
-        if (sales != null ? !sales.equals(that.sales) : that.sales != null) return false;
-        if (stock != null ? !stock.equals(that.stock) : that.stock != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (views != null ? !views.equals(that.views) : that.views != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = goodsId != null ? goodsId.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (picture != null ? picture.hashCode() : 0);
-        result = 31 * result + (sales != null ? sales.hashCode() : 0);
-        result = 31 * result + (stock != null ? stock.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (views != null ? views.hashCode() : 0);
-        return result;
-    }
 
     public Integer getDelect() {
-        return delete;
+        return goodsDelete;
     }
 
     public void setDelect(Integer delect) {
-        this.delete = delect;
+        this.goodsDelete = delect;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+//        private Integer goodsId;
+//        private String type;
+//        private Double price;
+//        private String title;
+//        private String picture;
+//        private Integer sales;
+//        private Integer stock;
+//        private String status;
+//        private Integer views;
+//        private Integer delete;
+//        private Bitmap bitmap;
+//        private boolean downloading = false;
+        parcel.writeInt(goodsId);
+        parcel.writeString(type);
+        parcel.writeDouble(price);
+        parcel.writeString(title);
+        parcel.writeString(picture);
+        parcel.writeInt(sales);
+        parcel.writeInt(stock);
+        parcel.writeString(status);
+        parcel.writeInt(views);
+        parcel.writeInt(goodsDelete);
+//        bitmap.writeToParcel(parcel,0);
+        parcel.writeByte((byte)(downloading?1:0));
+    }
+    public GoodsEntity(Parcel parcel){
+        goodsId = parcel.readInt();
+        type = parcel.readString();
+        price = parcel.readDouble();
+        title = parcel.readString();
+        picture = parcel.readString();
+        sales = parcel.readInt();
+        stock = parcel.readInt();
+        status = parcel.readString();
+        views = parcel.readInt();
+        goodsDelete = parcel.readInt();
+//        bitmap = Bitmap.CREATOR.createFromParcel(parcel);
+        downloading = parcel.readByte() != 0;
+    }
+
+    public static final Creator<GoodsEntity> CREATOR = new Creator<GoodsEntity>() {
+        @Override
+        public GoodsEntity createFromParcel(Parcel parcel) {
+            return new GoodsEntity(parcel);
+        }
+
+        @Override
+        public GoodsEntity[] newArray(int i) {
+            return new GoodsEntity[0];
+        }
+    };
 }
