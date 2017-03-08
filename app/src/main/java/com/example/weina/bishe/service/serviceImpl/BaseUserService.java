@@ -110,8 +110,14 @@ public class BaseUserService implements IBaseUserService{
             }
 
             @Override
-            public void onSuccess(InputStream data) {
-
+            public void onError(String msg) {
+                handler.post(new Runnable() {
+                    //登录成功后提示
+                    @Override
+                    public void run() {
+                        loginDialog.setmMessage(" fail to connect net ");
+                    }
+                });
             }
         });
 

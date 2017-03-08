@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@drawable/main_buttom_bg"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="51dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/me_home_home_button"
+            android:background="@drawable/home_button"
+            android:layout_width="51dp"
+            android:scaleType="centerCrop"
+            android:layout_height="wrap_content" />
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/me_home_cart_button"
+            android:background="@drawable/cart_button"
+            android:layout_width="51dp"
+            android:scaleType="centerCrop"
+
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/me_home_me_button"
+            android:background="@drawable/me_button"
+            android:layout_width="51dp"
+            android:scaleType="centerCrop"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>

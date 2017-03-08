@@ -293,12 +293,12 @@ public class OkHttpUtil {
         public void onStart() {};
 
         // 成功回调
-        public abstract void onSuccess(String data);
+        public  void onSuccess(String data){};
 
-        public abstract void onSuccess(InputStream data);
+        public  void onSuccess(InputStream data){};
 
         // 失败回调
-        public void onError(String msg) {};
+        public abstract void onError(String msg);
     }
 
 }

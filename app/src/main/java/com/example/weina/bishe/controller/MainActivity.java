@@ -11,10 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
+import com.example.weina.bishe.adapter.MenuAdapter;
+import com.example.weina.bishe.bean.MenuList;
 import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private XRecyclerView mRecyclerView;
     private HomeAdapter mAdapter;
     private ArrayList<GoodsEntity> listData;
+    private ArrayList<MenuList> mMenuLists;
     private static Handler mhandler;
     private static int page;
     public static final String GOOD_BUNDLE = "good_bundle";
@@ -63,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         //为侧滑菜单设置布局
         menu.setMenu(R.layout.nav_header_main);
+        /**
+         * 初始化 菜单内容
+         */
+        initData();
+        initView();
+
 
         //内容
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
@@ -114,15 +125,15 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new HomeAdapter(listData);
         //设置 监听 ****************************
         mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Log.d(" 标记",""+position);
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this,GoodDetailActivity.class);
-                intent.putExtra(GOOD_BUNDLE,listData.get(position-2));
-                startActivity(intent);
-            }
-        });
+        @Override
+        public void onItemClick(View view, int position) {
+            Log.d(" 标记",""+position);
+            Intent intent = new Intent();
+            intent.setClass(MainActivity.this,GoodDetailActivity.class);
+            intent.putExtra(GOOD_BUNDLE,listData.get(position-2));
+            startActivity(intent);
+        }
+    });
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -149,7 +160,12 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setHandler(mhandler);
         //第一次打开获取数据
         HomeService.getContent(listData);
-        //底部按钮
+
+        /**
+         * 按钮  绑定
+         */
+
+
         mMeButton = (ImageButton)findViewById(R.id.home_me_button);
         mMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +195,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initData(){
+        mMenuLists = new ArrayList<>();
+        mMenuLists.add(new MenuList("hello",0));
+    }
+    private void initView(){
+        MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this,R.layout.main_menu_list,mMenuLists);
+        ListView listView = (ListView) findViewById(R.id.menu_list);
+        listView.setAdapter(menuAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
     }
 
     public static int getPage() {

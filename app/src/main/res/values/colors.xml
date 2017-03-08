@@ -13,4 +13,6 @@
     <color name="color_white">#ffffff</color>
     <color name="btn_press_color">#20e7e7e7</color>
     <color name="btn_pressed_color">#47ffffff</color>
+    <color name="goodPrice">#ff690a</color>
+    <color name="goodTitle">#7b7775</color>
 </resources>

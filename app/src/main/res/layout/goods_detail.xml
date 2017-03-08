@@ -37,8 +37,9 @@
             android:id="@+id/good_detail_img"
             android:layout_width="match_parent"
             android:layout_height="240dp"
+            android:layout_weight="1"
             android:src="@drawable/login_wait"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             android:paddingBottom="1dp" />
         <TextView
             android:id="@+id/good_detail_title"
@@ -46,11 +47,43 @@
             android:layout_height="wrap_content"
             android:text=" 小米麦旋风限时出售巴拉巴拉巴拉"
             android:textStyle="bold"
-            android:textColor="#2b2a2a"
+            android:textColor="#1d1d1d"
             android:maxLines="2"
             android:ellipsize="end"
-            android:padding="10dp"
+            android:padding="5dp"
             android:textSize="22sp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/good_price"
+                android:text="￥ 300"
+                android:textSize="30sp"
+                android:layout_margin="8dp"
+                android:textColor="@color/goodPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/good_sales"
+                android:text="300 人付款"
+                android:textColor="@color/goodTitle"
+                android:layout_margin="15dp"
+                android:gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <!--标题 灰色-->
+    <TextView
+        android:layout_alignParentTop="true"
+        android:background="#602b2a2a"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"/>
 
 </RelativeLayout>

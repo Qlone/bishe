@@ -1,13 +1,17 @@
 package com.example.weina.bishe.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
@@ -70,6 +74,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
      * 提示框显示项的个数
      */
     private static int hintSize = DEFAULT_HINT_SIZE;
+    /**
+     * 下拉 选项框
+     */
+    private ListView mListView;
 
     private Handler handler = new Handler(Looper.getMainLooper());
     private static Handler mHandler;
@@ -101,6 +109,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
             }
         }
     }
+    @Override
+    public void onBackPressed(){
+        if(mListView.getVisibility()!= View.GONE){
+            mListView.setVisibility(View.GONE);
+        }else{
+            super.onBackPressed();
+        }
+    }
     /**
      * 初始化数据
      */
@@ -118,6 +134,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
      * 初始化视图
      */
     private void initViews() {
+        mListView = (ListView) findViewById(R.id.search_lv_tips);
         lvResults = (XRecyclerView) findViewById(R.id.search_list);
         searchView = (SearchView) findViewById(R.id.main_search_layout);
         //设置监听
@@ -177,6 +194,17 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         mAdapter.setHandler(mHandler);
         SearchService.searchGoodByTitle(listData,title);
 
+
+        mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Log.d(" 标记",""+position);
+                Intent intent = new Intent();
+                intent.setClass(SearchActivity.this,GoodDetailActivity.class);
+                intent.putExtra(MainActivity.GOOD_BUNDLE,listData.get(position-1));
+                startActivity(intent);
+            }
+        });
     }
 
     /**

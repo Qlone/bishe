@@ -26,8 +26,17 @@ public class GoodsEntity implements Parcelable {
     private String status;
     private Integer views;
     private Integer goodsDelete;
+    private String mPictureGroup;
     private Bitmap bitmap;
     private boolean downloading = false;
+
+    public String getPictureGroup() {
+        return mPictureGroup;
+    }
+
+    public void setPictureGroup(String pictureGroup) {
+        mPictureGroup = pictureGroup;
+    }
 
     public String getType() {
         return type;
@@ -173,6 +182,7 @@ public class GoodsEntity implements Parcelable {
         parcel.writeString(status);
         parcel.writeInt(views);
         parcel.writeInt(goodsDelete);
+        parcel.writeString(mPictureGroup);
 //        bitmap.writeToParcel(parcel,0);
         parcel.writeByte((byte)(downloading?1:0));
     }
@@ -187,6 +197,7 @@ public class GoodsEntity implements Parcelable {
         status = parcel.readString();
         views = parcel.readInt();
         goodsDelete = parcel.readInt();
+        mPictureGroup = parcel.readString();
 //        bitmap = Bitmap.CREATOR.createFromParcel(parcel);
         downloading = parcel.readByte() != 0;
     }

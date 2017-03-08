@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import com.example.weina.bishe.bean.GsonLogin;
 import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.entity.GoodsEntity;
-import com.example.weina.bishe.entity.UserEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.StaticString;
 import com.example.weina.bishe.util.FlushedInputStream;
 import com.example.weina.bishe.util.GoodsManager;
-import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -70,18 +67,15 @@ public class HomeService implements IHomeService{
             }
 
             @Override
-            public void onSuccess(InputStream data) {
-
+            public void onError(String msg) {
+                MainActivity.getHandle().sendEmptyMessage(UPDATE_OVER);
+                MainActivity.getHandle().sendEmptyMessage(LOAD_OVER);
             }
         });
     }
     public static void getPicture(final GoodsEntity goodsEntity, final int position, final Handler handler){
         if(null != goodsEntity.getPicture()) {
             mOkHttpUtil.getStream(goodsEntity.getPicture(), new OkHttpUtil.HttpCallback() {
-                @Override
-                public void onSuccess(String data) {
-
-                }
 
                 @Override
                 public void onSuccess(InputStream data)  {
@@ -99,26 +93,15 @@ public class HomeService implements IHomeService{
                     msg.what = POSITION_MSG;
                     handler.sendMessage(msg);
                 }
+
+                @Override
+                public void onError(String msg) {
+                    Message mssg = new Message();
+                    mssg.what = POSITION_MSG;
+                    handler.sendMessage(mssg);
+                }
             });
         }
     }
 
-    public static void login(){
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUserName("first");
-        userEntity.setPassword("asd");
-        GsonLogin gsonLogin = new GsonLogin();
-        gsonLogin.setUserEntity(userEntity);
-        mOkHttpUtil.postJson("http://192.168.137.1:8080/user/login", JsonUtil.toJson(gsonLogin), new OkHttpUtil.HttpCallback() {
-            @Override
-            public void onSuccess(String data) {
-                System.out.print(data);
-            }
-
-            @Override
-            public void onSuccess(InputStream data) {
-
-            }
-        });
-    }
 }

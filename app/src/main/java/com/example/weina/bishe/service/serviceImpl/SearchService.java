@@ -13,7 +13,6 @@ import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +40,12 @@ public class SearchService implements ISearchService{
                 List<LableEntity> lableList = gson.fromJson(data,new TypeToken<List<LableEntity>>(){}.getType());
                 call.callback(lableList);
             }
+
             @Override
-            public void onSuccess(InputStream data) {
+            public void onError(String msg) {
 
             }
+
         });
     }
     /**
@@ -61,8 +62,9 @@ public class SearchService implements ISearchService{
                 List<LableEntity> lableList = gson.fromJson(data,new TypeToken<List<LableEntity>>(){}.getType());
                 call.callback(lableList);
             }
+
             @Override
-            public void onSuccess(InputStream data) {
+            public void onError(String msg) {
 
             }
         });
@@ -81,9 +83,10 @@ public class SearchService implements ISearchService{
             }
 
             @Override
-            public void onSuccess(InputStream data) {
+            public void onError(String msg) {
 
             }
+
         });
     }
 
@@ -119,8 +122,9 @@ public class SearchService implements ISearchService{
             }
 
             @Override
-            public void onSuccess(InputStream data) {
-
+            public void onError(String msg) {
+                SearchActivity.getHandler().sendEmptyMessage(UPDATE_OVER);
+                SearchActivity.getHandler().sendEmptyMessage(UPDATE_OVER);
             }
         });
     }
