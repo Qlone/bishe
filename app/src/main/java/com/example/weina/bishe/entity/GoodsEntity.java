@@ -8,7 +8,6 @@
 
 package com.example.weina.bishe.entity;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,7 +26,6 @@ public class GoodsEntity implements Parcelable {
     private Integer views;
     private Integer goodsDelete;
     private String mPictureGroup;
-    private Bitmap bitmap;
     private boolean downloading = false;
 
     public String getPictureGroup() {
@@ -52,14 +50,6 @@ public class GoodsEntity implements Parcelable {
 
     public void setGoodsDelete(Integer goodsDelete) {
         this.goodsDelete = goodsDelete;
-    }
-
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
     }
 
     public boolean isDownloading() {

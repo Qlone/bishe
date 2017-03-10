@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.home_fragment_button);
         imageView.setImageResource(mImageViewArray[index]);
-
-
         return view;
     }
 

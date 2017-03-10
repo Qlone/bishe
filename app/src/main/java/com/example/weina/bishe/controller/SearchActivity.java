@@ -103,11 +103,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
     @Override
     protected void  onDestroy(){
         super.onDestroy();
-        for(GoodsEntity goodsEntity: listData){
-            if(null != goodsEntity&& null != goodsEntity.getBitmap() && !goodsEntity.getBitmap().isRecycled()){
-                goodsEntity.getBitmap().recycle();
-            }
-        }
     }
     @Override
     public void onBackPressed(){

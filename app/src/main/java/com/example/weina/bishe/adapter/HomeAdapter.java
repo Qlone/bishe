@@ -2,7 +2,6 @@ package com.example.weina.bishe.adapter;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,8 @@ import android.widget.TextView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.GoodsEntity;
-import com.example.weina.bishe.service.serviceImpl.HomeService;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 
@@ -35,33 +35,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final HomeAdapter.ViewHolder viewHolder, int position) {
         viewHolder.mItemTitle.setText( datas.get(position).getTitle());
-        if(null != datas.get(position).getBitmap()) {
-            viewHolder.mItemPicture.setImageBitmap(datas.get(position).getBitmap());
-        }else {
-            viewHolder.mItemPicture.setImageResource(R.drawable.login_wait);
-        }
+
+        viewHolder.mSimpleDraweeView.setImageURI(datas.get(position).getPicture());
+
         viewHolder.mItemSales.setText(datas.get(position).getSales()+"人付款");
         viewHolder.mItemPrice.setText("￥ "+datas.get(position).getPrice());
-        if(null ==datas.get(position).getBitmap() && true !=  datas.get(position).isDownloading()){
-            Log.d("搜索图片 请求id ：",""+position);
-            datas.get(position).setDownloading(true);
-            HomeService.getPicture(datas.get(position),position,mHandler);
-        }
-        if(null !=datas.get(position).getStatus()) {
-            switch (datas.get(position).getStatus()) {
-                case "hot":
-                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.hot);
-                    break;
-                case "recommend":
-                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
-                    break;
-                default:
-                    viewHolder.mItemTypes.setBackgroundResource(0);
-            }
-        }
-        else {
-            viewHolder.mItemTypes.setBackgroundResource(0);
-        }
+
+//        if(null !=datas.get(position).getStatus()) {
+//            switch (datas.get(position).getStatus()) {
+//                case "hot":
+//                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.hot);
+//                    break;
+//                case "recommend":
+//                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
+//                    break;
+//                default:
+//                    viewHolder.mItemTypes.setBackgroundResource(0);
+//            }
+//        } else {
+//            viewHolder.mItemTypes.setBackgroundResource(0);
+//        }
 
         //若回调，则设置点击事件
         if(mLicense != null){
@@ -86,14 +79,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         public TextView mItemPrice;
         public TextView mItemSales;
         public ImageView mItemPicture;
+        public SimpleDraweeView mSimpleDraweeView;
         public ImageView mItemTypes;
         public ViewHolder(View view){
             super(view);
             mItemTitle = (TextView) view.findViewById(R.id.item_title);
             mItemPrice = (TextView) view.findViewById(R.id.item_price);
             mItemSales = (TextView) view.findViewById(R.id.item_sales);
-            mItemPicture = (ImageView)view.findViewById(R.id.item_img);
+//            mItemPicture = (ImageView)view.findViewById(R.id.item_img);
+            mSimpleDraweeView = (SimpleDraweeView) view.findViewById(R.id.item_img);
             mItemTypes = (ImageView)view.findViewById(R.id.item_type);
+
+            //设置宽高比例
+            mSimpleDraweeView.setAspectRatio(1f);
+            //设置对其方式
+
+            mSimpleDraweeView.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
         }
 
     }

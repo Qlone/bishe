@@ -7,7 +7,6 @@ import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.entity.LableEntity;
 import com.example.weina.bishe.service.ISearchService;
 import com.example.weina.bishe.service.StaticString;
-import com.example.weina.bishe.util.GoodsManager;
 import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
@@ -100,7 +99,7 @@ public class SearchService implements ISearchService{
                     List<GoodsEntity> testBean = gson.fromJson(data,new TypeToken<List<GoodsEntity>>(){}.getType());
                     if(null != testBean) {
                         if(SearchActivity.getPage() == 1){
-                            GoodsManager.clear(datas);
+                            datas.clear();
                             datas.addAll(testBean);
                             SearchActivity.getHandler().sendEmptyMessage(UPDATE_OVER);
                         }else {

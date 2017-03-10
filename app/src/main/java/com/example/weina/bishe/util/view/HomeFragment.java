@@ -32,17 +32,33 @@ public class HomeFragment extends Fragment {
     private HomeAdapter mAdapter;
     private ArrayList<GoodsEntity> listData;
     private static int page;
-    private static Handler mhandler;
     private ImageButton mSearchButton;
+
+    //缓存自身
+    private View mView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_fragment, null);
-        initView(view);
-        return view;
+        if(null == mView) {
+            mView = inflater.inflate(R.layout.main_fragment, null);
+            initView( mView);
+            //        //第一次打开获取数据
+            HomeService.getContent(listData);
+        }
+        //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误
+        ViewGroup viewGroup = (ViewGroup) mView.getParent();
+        if(null != viewGroup){
+            viewGroup.removeView(viewGroup);
+        }
+        return  mView;
+    }
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
     }
 
     private void initView(View view){
+        Log.d("初始化 "," recycle");
         //内容
         mRecyclerView = (XRecyclerView)view.findViewById(R.id.recyclerview);
 
@@ -88,27 +104,27 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-        listData = new ArrayList<>();
-        mAdapter = new HomeAdapter(listData);
-        //设置 监听 ****************************
-        mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Log.d(" 标记",""+position);
-                Intent intent = new Intent();
-                intent.setClass(getContext(),GoodDetailActivity.class);
-                intent.putExtra(MainActivity.GOOD_BUNDLE,listData.get(position-2));
-                startActivity(intent);
-            }
-        });
+        if(null == listData) {
+            listData = new ArrayList<>();
+        }else {
+            listData.clear();
+            mAdapter.notifyDataSetChanged();
+        }
+        if(null == mAdapter) {
+            mAdapter = new HomeAdapter(listData);
+            //设置 监听 ****************************
+            mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Log.d(" 标记",""+position);
+                    Intent intent = new Intent();
+                    intent.setClass(getContext(),GoodDetailActivity.class);
+                    intent.putExtra(MainActivity.GOOD_BUNDLE,listData.get(position-2));
+                    startActivity(intent);
+                }
+            });
+        }
         mRecyclerView.setAdapter(mAdapter);
-
-
-        mhandler = MainActivity.getHandle();
-        mAdapter.setHandler(mhandler);
-        //第一次打开获取数据
-        HomeService.getContent(listData);
 
         /**
          * 按钮  绑定
