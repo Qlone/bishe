@@ -5,4 +5,8 @@ package com.example.weina.bishe.service;
  */
 public interface StaticString {
     String URL = "http://192.168.137.2:8080";
+    /**
+     * 图片 大小， 列表
+     */
+    int GOODS_IMG_ITEM_SIZE = 150;
 }

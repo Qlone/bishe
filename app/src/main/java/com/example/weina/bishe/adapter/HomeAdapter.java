@@ -1,5 +1,6 @@
 package com.example.weina.bishe.adapter;
 
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,14 @@ import android.widget.TextView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.GoodsEntity;
+import com.example.weina.bishe.service.StaticString;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.ArrayList;
 
@@ -36,25 +43,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public void onBindViewHolder(final HomeAdapter.ViewHolder viewHolder, int position) {
         viewHolder.mItemTitle.setText( datas.get(position).getTitle());
 
-        viewHolder.mSimpleDraweeView.setImageURI(datas.get(position).getPicture());
+        /**
+         * 图片加载
+         */
+        int width = StaticString.GOODS_IMG_ITEM_SIZE, height = StaticString.GOODS_IMG_ITEM_SIZE;
+        //Log.d("图片的宽和高",""+width+":"+height);
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(datas.get(position).getPicture()))
+                .setResizeOptions(new ResizeOptions(width, height))
+                .build();
+        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                .setOldController(viewHolder.mSimpleDraweeView.getController())
+                .setImageRequest(request)
+                .build();
+        viewHolder.mSimpleDraweeView.setController(controller);
 
         viewHolder.mItemSales.setText(datas.get(position).getSales()+"人付款");
         viewHolder.mItemPrice.setText("￥ "+datas.get(position).getPrice());
 
-//        if(null !=datas.get(position).getStatus()) {
-//            switch (datas.get(position).getStatus()) {
-//                case "hot":
-//                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.hot);
-//                    break;
-//                case "recommend":
-//                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
-//                    break;
-//                default:
-//                    viewHolder.mItemTypes.setBackgroundResource(0);
-//            }
-//        } else {
-//            viewHolder.mItemTypes.setBackgroundResource(0);
-//        }
+        if(null !=datas.get(position).getStatus()) {
+            switch (datas.get(position).getStatus()) {
+                case "hot":
+                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.hot);
+                    break;
+                case "recommend":
+                    viewHolder.mItemTypes.setBackgroundResource(R.drawable.recommand);
+                    break;
+                default:
+                    viewHolder.mItemTypes.setBackgroundResource(0);
+            }
+        } else {
+            viewHolder.mItemTypes.setBackgroundResource(0);
+        }
 
         //若回调，则设置点击事件
         if(mLicense != null){

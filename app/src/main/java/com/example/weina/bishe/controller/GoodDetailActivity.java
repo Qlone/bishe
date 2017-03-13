@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.GoodsEntity;
+import com.example.weina.bishe.util.view.ChooseNumberView;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,7 +37,7 @@ public class GoodDetailActivity extends AppCompatActivity{
      * 选择 购买商品的属性 页面
      */
     private LinearLayout mChoose;
-
+    private ChooseNumberView mChooseNumberView;
     private Button mCartButton;
     private Button mBuyButton;
     private TextView mbg;
@@ -115,5 +116,9 @@ public class GoodDetailActivity extends AppCompatActivity{
                 }
             }
         });
+
+        //设置选择数量
+        mChooseNumberView = (ChooseNumberView) findViewById(R.id.good_detail_inner_choose);
+        mChooseNumberView.setMaxNumber(mGoodsEntity.getStock());
     }
 }
