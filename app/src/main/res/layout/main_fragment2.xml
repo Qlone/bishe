@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:background="#d5f1f0f0"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView
-        android:text="hello hasdasdasdawwadada"
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/order_recycle"
+        android:layout_above="@id/main_buttom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </com.jcodecraeer.xrecyclerview.XRecyclerView>
 </LinearLayout>

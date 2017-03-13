@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                         positonMes();
                         break;
                     }
+                    case IHomeService.ORDER_UPDATA_OVER:{
+                        OrderUpdateOver();
+                    }
                 }
                 super.handleMessage(msg);
             }
@@ -160,6 +163,16 @@ public class MainActivity extends AppCompatActivity {
         String tag= mTabHost.getCurrentTabTag();
         try {
             HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(tag);
+            fragment.updateOver();
+        }catch (Exception e){
+            Log.d("当前页面不是 主页","");
+            e.printStackTrace();
+        }
+    }
+    public void OrderUpdateOver(){
+        String tag= mTabHost.getCurrentTabTag();
+        try {
+            HomeFragment2 fragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag(tag);
             fragment.updateOver();
         }catch (Exception e){
             Log.d("当前页面不是 主页","");

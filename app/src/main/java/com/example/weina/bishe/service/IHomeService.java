@@ -9,4 +9,7 @@ public interface IHomeService {
     String POSITION_FLAG = "position";
     int LOAD_OVER =3;
 
+    int ORDER_UPDATA_OVER = 4;
+    int ORDER_LOAD_OVER = 5;
+
 }

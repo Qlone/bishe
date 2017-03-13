@@ -16,8 +16,6 @@ import com.example.weina.bishe.util.OkHttpUtil;
 import com.example.weina.bishe.util.view.LoginDialog;
 import com.google.gson.Gson;
 
-import java.io.InputStream;
-
 /**
  * Created by weina on 2017/3/2.
  */
@@ -122,5 +120,13 @@ public class BaseUserService implements IBaseUserService{
         });
 
         return false;
+    }
+
+    public static GsonLogin getGsonLogin() {
+        return sGsonLogin;
+    }
+
+    public static void setGsonLogin(GsonLogin gsonLogin) {
+        sGsonLogin = gsonLogin;
     }
 }
