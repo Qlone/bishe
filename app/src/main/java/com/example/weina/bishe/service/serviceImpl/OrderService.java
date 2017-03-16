@@ -1,5 +1,8 @@
 package com.example.weina.bishe.service.serviceImpl;
 
+import android.os.Bundle;
+import android.os.Message;
+
 import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.entity.OrderEntity;
 import com.example.weina.bishe.service.IHomeService;
@@ -17,7 +20,12 @@ import java.util.List;
  */
 public class OrderService implements IOrderService {
 
-    public static void addOrder(int userId,int addressId,int goodsId,int amount){
+    public interface OrderCallBack{
+        void callBack(String data);
+        void error(String msg);
+    }
+
+    public static void addOrder(int userId, int addressId, int goodsId, int amount, final OrderCallBack orderCallBack){
         String url = StaticString.URL +"/order/add?userId="+userId
                 +"&addressId="+addressId
                 +"&goodsId="+goodsId
@@ -26,12 +34,12 @@ public class OrderService implements IOrderService {
 
             @Override
             public void onSuccess(String data){
-
+                orderCallBack.callBack(data);
             }
 
             @Override
             public void onError(String msg) {
-
+                orderCallBack.callBack(msg);
             }
         });
     }
@@ -47,18 +55,55 @@ public class OrderService implements IOrderService {
                 if(null != data) {
                     Gson gson = new Gson();
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
-                    datas.clear();
-                    datas.addAll(testBean);
+                    if(null != testBean) {
+                        datas.clear();
+                        datas.addAll(testBean);
+                    }
                     MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
                 }
             }
 
             @Override
             public void onError(String msg) {
-
+                MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
             }
         });
     }
 
+    public static void updataOrderNumber(int userId,int orderId,int amount){
+        String url = StaticString.URL +"/order/changeAmount?userId="+userId
+                +"&orderId="+orderId
+                +"&amount="+amount;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
+            }
+            @Override
+            public void onError(String msg) {
+                MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
+            }
+        });
+    }
+    public static void deleteOrder(int userId, int orderId, final int position){
+        String url = StaticString.URL +"/order/deleteCart?userId="+userId
+                +"&orderId="+orderId;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                if(null !=data && !"".equals(data)&& "true".equals(data)) {
+                    Message message = new Message();
+                    Bundle mbundle = new Bundle();
+                    mbundle.putInt(IHomeService.POSITION_FLAG, position);
+                    message.setData(mbundle);
+                    message.what = IHomeService.ORDER_UPDATA;
+                    MainActivity.getHandle().sendMessage(message);//删除后更新
+                }
+            }
+            @Override
+            public void onError(String msg) {
 
+            }
+        });
+    }
 }

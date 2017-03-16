@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case IHomeService.LOAD_OVER:{
                         loadOver();
+                        break;
                     }
                     case IHomeService.POSITION_MSG:{
                         positonMes();
@@ -83,6 +84,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case IHomeService.ORDER_UPDATA_OVER:{
                         OrderUpdateOver();
+                        break;
+                    }
+                    case IHomeService.HOST_TAB_ID1:{
+                        setTabHostView(IHomeService.HOST_TAB_ID1);
+                        break;
+                    }
+                    case IHomeService.ORDER_UPDATA:{
+                        int position = msg.getData().getInt(IHomeService.POSITION_FLAG);
+                        orderUpdata(position);
+                        break;
                     }
                 }
                 super.handleMessage(msg);
@@ -199,6 +210,20 @@ public class MainActivity extends AppCompatActivity {
             Log.d("当前页面不是 主页","");
             e.printStackTrace();
         }
+    }
+    public void orderUpdata(int positon){
+        String tag= mTabHost.getCurrentTabTag();
+        mTabHost.getTabContentView();
+        try {
+            HomeFragment2 fragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag(tag);
+            fragment.updataData(positon);
+        }catch (Exception e){
+            Log.d("当前页面不是 主页","");
+            e.printStackTrace();
+        }
+    }
+    public void setTabHostView(int i){
+        mTabHost.setCurrentTab(i);
     }
 
 }

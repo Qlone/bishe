@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.weina.bishe.R;
 
@@ -23,7 +22,6 @@ public class ChooseNumberView extends LinearLayout {
     private ImageButton mBtnMinus;
     private ImageButton mBtnPlus;
     private EditText mEditText;
-    private TextView mTextView;
 
     private InputMethodManager mInputMethodManager ;
     private int number;
@@ -89,9 +87,8 @@ public class ChooseNumberView extends LinearLayout {
             }
         });
 
-        mTextView = (TextView) findViewById(R.id.view_choose_text_stock);
         setMaxNumber(maxNumber);
-        setNumber(MIN_NUMBER);
+        setNumber(number);
         mEditText.setFocusable(false);
 
     }
@@ -102,7 +99,6 @@ public class ChooseNumberView extends LinearLayout {
 
     public void setMaxNumber(int maxNumber) {
         this.maxNumber = maxNumber;
-        mTextView.setText("库存数量  "+ maxNumber);
     }
 
     public int getNumber() {

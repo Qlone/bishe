@@ -3,6 +3,8 @@ package com.example.weina.bishe.controller;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,12 +14,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
 import com.example.weina.bishe.util.view.ChooseNumberView;
+import com.example.weina.bishe.util.view.GifWaitBg;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -40,6 +44,7 @@ public class GoodDetailActivity extends AppCompatActivity{
      */
     private LinearLayout mChoose;
     private ChooseNumberView mChooseNumberView;
+    private TextView mStockText;
     private Button mCartButton;
     private Button mBuyButton;
     private Button mConfirmButton;
@@ -47,6 +52,15 @@ public class GoodDetailActivity extends AppCompatActivity{
     private TextView mbg;
     private TranslateAnimation mShowAction;
     private TranslateAnimation mHiddenAction;
+    private GifWaitBg mGifWaitBg;
+    private BaseUserService.ButtonBackCall mButtonBackCall;
+
+    //句柄
+    private Handler mHandler;
+    /**
+     *
+     * 等待条
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +92,19 @@ public class GoodDetailActivity extends AppCompatActivity{
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
                 +1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
         mShowAction.setDuration(500);
+
+        mButtonBackCall = new BaseUserService.ButtonBackCall() {
+            @Override
+            public void doConfirm() {
+
+            }
+
+            @Override
+            public void doCancel() {
+
+            }
+        };
+        mHandler = new Handler(Looper.getMainLooper());
 
     }
 
@@ -120,20 +147,71 @@ public class GoodDetailActivity extends AppCompatActivity{
                 }
             }
         });
+        mBuyButton = (Button) findViewById(R.id.good_detail_bt_buy);
+        mBuyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
 
         //设置选择数量
         mChooseNumberView = (ChooseNumberView) findViewById(R.id.good_detail_inner_choose);
         mChooseNumberView.setMaxNumber(mGoodsEntity.getStock());
-
+        mStockText = (TextView) findViewById(R.id.view_choose_text_stock);
+        mStockText.setText("库存数量: "+mGoodsEntity.getStock());
         //设置
         mConfirmButton = (Button) findViewById(R.id.good_detail_btn_confirm);
         mConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(BaseUserService.getInstatnce().checkUser(GoodDetailActivity.this)) {
-                    OrderService.addOrder(BaseUserService.getGsonLogin().getUserEntity().getUserId(), 0, mGoodsEntity.getGoodsId(), mChooseNumberView.getNumber());
+                if(BaseUserService.getInstatnce().checkUser(GoodDetailActivity.this,mButtonBackCall)) {
+                    mGifWaitBg.setGifShow();//显示等待条
+                    OrderService.addOrder(BaseUserService.getGsonLogin().getUserEntity().getUserId(), 0, mGoodsEntity.getGoodsId(), mChooseNumberView.getNumber(), new OrderService.OrderCallBack() {
+                        @Override
+                        public void callBack(final String data) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if("success".equals(data)){
+                                        successShow();
+                                    }else {
+                                        errorMsgShow();
+                                    }
+                                    mGifWaitBg.setGifGone();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void error(final String msg) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    errorMsgShow();
+                                    mGifWaitBg.setGifGone();
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
+        mGifWaitBg = (GifWaitBg) findViewById(R.id.good_detail_gifView);
     }
+
+
+    private void errorMsgShow(){
+        Toast.makeText(this,"创建 订单失败 请刷新后重试 ",Toast.LENGTH_SHORT).show();
+    }
+    private void successShow(){
+        Toast.makeText(this,"购买成功 ",Toast.LENGTH_SHORT).show();
+    }
+    private void waitTwo(){
+        try {
+             Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

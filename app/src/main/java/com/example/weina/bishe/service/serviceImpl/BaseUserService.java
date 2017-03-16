@@ -26,6 +26,7 @@ public class BaseUserService implements IBaseUserService{
     private Handler handler = new Handler(Looper.getMainLooper());
     private static String SP_NAME = "user";
     private static String USER_KEY = "username";
+    private ButtonBackCall mButtonBackCall;
     private BaseUserService(){
     }
     public synchronized static BaseUserService getInstatnce(){
@@ -35,10 +36,15 @@ public class BaseUserService implements IBaseUserService{
         return instance;
     }
 
-    @Override
-    public boolean checkUser(final Context context) {
-        //检测是否 登录且合法
+    public interface ButtonBackCall{
+        public void doConfirm();
+        public void doCancel();
+    }
 
+    @Override
+    public boolean checkUser(final Context context, final ButtonBackCall buttonBackCall) {
+        //检测是否 登录且合法
+        this.mButtonBackCall =buttonBackCall;
         if(null == sGsonLogin || !sGsonLogin.isBoolean()){
             //获取上一次的 用户名字
             //步骤1：创建一个SharedPreferences接口对象
@@ -57,7 +63,7 @@ public class BaseUserService implements IBaseUserService{
 
                 @Override
                 public void doCancel() {
-
+                    mButtonBackCall.doCancel();
                 }
             });
             loginDialog.show();
@@ -94,6 +100,9 @@ public class BaseUserService implements IBaseUserService{
                             }
                         });
                         loginDialog.onBackPressed();
+                        if(null != mButtonBackCall) {
+                            mButtonBackCall.doConfirm();
+                        }
                     }else {
                         handler.post(new Runnable() {
                             //登录成功后提示

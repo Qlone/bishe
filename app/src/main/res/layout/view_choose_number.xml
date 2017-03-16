@@ -19,7 +19,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/search_edittext_shape"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:singleLine="true"
         android:hint="1"
         android:inputType="number"
@@ -35,11 +36,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/view_choose_text_stock"
-        android:text="库存数量  0"
-        android:layout_margin="10dp"
-        android:gravity="bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+    <!--<TextView-->
+        <!--android:id="@+id/view_choose_text_stock"-->
+        <!--android:text="库存数量  0"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:gravity="bottom"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"/>-->
 </LinearLayout>

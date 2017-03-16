@@ -135,16 +135,29 @@
                 android:textSize="22sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <com.example.weina.bishe.util.view.ChooseNumberView
-                android:id="@+id/good_detail_inner_choose"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:layout_below="@+id/good_detail_inner_img"
                 android:layout_alignLeft="@+id/good_detail_inner_img"
                 android:layout_alignStart="@+id/good_detail_inner_img">
+                <com.example.weina.bishe.util.view.ChooseNumberView
+                    android:id="@+id/good_detail_inner_choose"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
 
-            </com.example.weina.bishe.util.view.ChooseNumberView>
+                </com.example.weina.bishe.util.view.ChooseNumberView>
+                <TextView
+                    android:id="@+id/view_choose_text_stock"
+                    android:text="库存数量  0"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
         </RelativeLayout>
         <Button
             android:id="@+id/good_detail_btn_confirm"
@@ -155,4 +168,11 @@
             android:layout_width="match_parent"/>
     </LinearLayout>
 
+    <com.example.weina.bishe.util.view.GifWaitBg
+        android:id="@+id/good_detail_gifView"
+        android:layout_below="@id/good_detail_title_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.example.weina.bishe.util.view.GifWaitBg>
 </RelativeLayout>

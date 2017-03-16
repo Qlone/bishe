@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class OrderEntity {
     private Integer mOrdersId;
-    private Integer mGoodId;
+    private Integer mGoodsId;
     private String mAddress;
     private String mPhone;
     private String mPicture;
@@ -19,6 +19,25 @@ public class OrderEntity {
     private Integer mAmount;
     private Integer mUserId;
 
+    private boolean isChoose =false;
+    private boolean isEdit = false;
+
+    public boolean isEdit() {
+        return isEdit;
+    }
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+    }
+
+    public boolean isChoose() {
+        return isChoose;
+    }
+
+    public void setChoose(boolean choose) {
+        isChoose = choose;
+    }
+
     public Integer getOrdersId() {
         return mOrdersId;
     }
@@ -27,12 +46,12 @@ public class OrderEntity {
         mOrdersId = ordersId;
     }
 
-    public Integer getGoodId() {
-        return mGoodId;
+    public Integer getGoodsId() {
+        return mGoodsId;
     }
 
-    public void setGoodId(Integer goodId) {
-        mGoodId = goodId;
+    public void setGoodsId(Integer goodsId) {
+        mGoodsId = goodsId;
     }
 
     public String getAddress() {

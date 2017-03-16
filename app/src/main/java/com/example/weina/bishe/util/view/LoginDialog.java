@@ -2,8 +2,10 @@ package com.example.weina.bishe.util.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -78,7 +80,21 @@ public class LoginDialog extends Dialog {
         mCancel = (Button)view.findViewById(R.id.login_button_cancle);
         mConfirm.setOnClickListener(new clickListener());
         mCancel.setOnClickListener(new clickListener());
-
+        this.setCanceledOnTouchOutside(false);//点击空白不消失
+        OnKeyListener keylistener = new DialogInterface.OnKeyListener(){
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode== KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        };
+        setOnKeyListener(keylistener);
+//        setCancelable(false);
 
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();

@@ -5,6 +5,10 @@ package com.example.weina.bishe.service;
  */
 public interface IOrderService {
     /**
+     * 购物车
+     */
+    String ORDER_STATUS_CART="cart";
+    /**
      * 删除 订单
      */
     String ORDER_STATUS_DEDLETE = "delete";

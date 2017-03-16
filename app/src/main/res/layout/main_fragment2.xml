@@ -8,6 +8,40 @@
         android:id="@+id/order_recycle"
         android:layout_above="@id/main_buttom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_weight="1"
+        android:layout_height="0dp">
     </com.jcodecraeer.xrecyclerview.XRecyclerView>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/order_buttom_btn_chooseAll"
+            android:background="@drawable/choose_button"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+        <TextView
+            android:id="@+id/order_buttom_text_text"
+            android:text="总价: ￥ 200"
+            android:gravity="right"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/goodPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/order_buttom_btn_submit"
+            android:text=" 提交订单 "
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="#ffab19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </LinearLayout>

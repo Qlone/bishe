@@ -5,6 +5,25 @@
                 android:background="@color/white"
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
                 xmlns:app="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/order_item_layout_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/order_item_downMsg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    <Button
+        android:id="@+id/order_item_btn_choose"
+        android:background="@drawable/choose_button"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"/>
+    </LinearLayout>
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -13,7 +32,9 @@
         app:placeholderImage="@drawable/login_wait"
         fresco:placeholderImage="@drawable/login_wait"
         fresco:placeholderImageScaleType="fitXY"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/order_item_layout_choose"/>
+    <!--下面 数量总价 创建时间-->
     <LinearLayout
         android:id="@+id/order_item_downMsg"
         android:layout_below="@id/order_item_img"
@@ -50,34 +71,81 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="15dp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/order_item_img"
-        android:layout_toEndOf="@+id/order_item_img"
-        android:layout_above="@+id/order_item_downMsg">
+        android:layout_toRightOf="@id/order_item_img"
+        android:layout_toEndOf="@id/order_item_img"
+        android:layout_above="@id/order_item_downMsg">
+        <Button
+            android:id="@+id/order_item_edit_btn"
+            android:text="编辑"
+            android:textColor="#e5666666"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="right"
+            android:background="@drawable/order_edit_btn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
         <TextView
             android:id="@+id/order_item_title"
             android:text="title"
             android:layout_weight="2"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:maxLines="2"
             android:ellipsize="end"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="0dp"/>
         <TextView
-            android:id="@+id/order_item_address"
-            android:text="地址 :"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
             android:layout_height="0dp"/>
-        <TextView
-            android:id="@+id/order_item_phone"
-            android:text="电话 :"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/order_item_save_layout"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/order_item_img"
+        android:layout_toEndOf="@id/order_item_img"
+        android:layout_above="@id/order_item_downMsg">
+
+        <Button
+            android:id="@+id/order_item_save_btn"
+            android:text="保存"
+            android:textColor="#e5666666"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="right"
+            android:background="@drawable/order_edit_btn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"/>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.example.weina.bishe.util.view.ChooseNumberView
+                android:id="@+id/order_item_choose_number"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </com.example.weina.bishe.util.view.ChooseNumberView>
+            <Button
+                android:id="@+id/order_item_delete_btn"
+                android:text="删除"
+                android:textColor="@color/white"
+                android:background="@color/red"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
