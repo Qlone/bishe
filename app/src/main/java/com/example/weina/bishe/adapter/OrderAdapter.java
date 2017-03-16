@@ -113,7 +113,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
         /**
          * 图片加载
          */
-        int width = StaticString.GOODS_IMG_ITEM_SIZE, height = StaticString.GOODS_IMG_ITEM_SIZE;
+        int width = StaticString.ORDER_IMG_SIZ, height = StaticString.ORDER_IMG_SIZ;
         //Log.d("图片的宽和高",""+width+":"+height);
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(data.get(position).getPicture()))
                 .setResizeOptions(new ResizeOptions(width, height))

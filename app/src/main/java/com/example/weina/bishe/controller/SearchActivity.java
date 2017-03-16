@@ -79,7 +79,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
      */
     private ListView mListView;
 
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private static Handler handler = new Handler(Looper.getMainLooper());
     private static Handler mHandler;
     private static int page;
     private static String title;

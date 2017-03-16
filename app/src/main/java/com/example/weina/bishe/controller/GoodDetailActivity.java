@@ -56,7 +56,7 @@ public class GoodDetailActivity extends AppCompatActivity{
     private BaseUserService.ButtonBackCall mButtonBackCall;
 
     //句柄
-    private Handler mHandler;
+    private static Handler mHandler;
     /**
      *
      * 等待条

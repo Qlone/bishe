@@ -2,7 +2,6 @@ package com.example.weina.bishe.util.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -33,9 +32,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<GoodsEntity> listData;
     private static int page;
     private ImageButton mSearchButton;
-
     //缓存自身
-    private View mView;
+    private static View mView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +82,7 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                new Handler().post(new Runnable(){
+                MainActivity.getHandle().post(new Runnable(){
                     public void run() {
                         page =1;
                         HomeService.getContent(listData);
@@ -95,7 +93,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onLoadMore() {
-                new Handler().post(new Runnable(){
+                MainActivity.getHandle().post(new Runnable(){
                     public void run() {
                         HomeService.getContent(listData);
 

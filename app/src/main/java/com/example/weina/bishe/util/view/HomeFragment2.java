@@ -1,13 +1,13 @@
 package com.example.weina.bishe.util.view;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.weina.bishe.R;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * Created by weina on 2017/3/8.
  */
 public class HomeFragment2 extends Fragment {
-    private View mView;
+    private static View mView;
     private XRecyclerView mXRecyclerView;
     private OrderAdapter mOrderAdapter;
     private ArrayList<OrderEntity> data;
@@ -36,6 +36,7 @@ public class HomeFragment2 extends Fragment {
     private BaseUserService.ButtonBackCall mButtonBackCall;
     private OrderAdapter.ChangeOrderCallBack mChangeOrderCallBack;
     private TextView mTotalMoney;
+    private RelativeLayout mNothingLayout;
     /**
      *  选定框
      */
@@ -50,15 +51,14 @@ public class HomeFragment2 extends Fragment {
         }
         //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误
         ViewGroup viewGroup = (ViewGroup) mView.getParent();
-        if(null != viewGroup){
-            viewGroup.removeView(viewGroup);
-        }
         if(BaseUserService.getInstatnce().checkUser(mView.getContext(), mButtonBackCall)) {
             OrderService.getOrder(BaseUserService.getGsonLogin().getUserEntity().getUserId(), IOrderService.ORDER_STATUS_CART, 1, MAX_CART, data);
         }else {
             onDestroy();
         }
-
+        if(null != viewGroup){
+            viewGroup.removeView(viewGroup);
+        }
         return  mView;
 
     }
@@ -120,6 +120,7 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void initView(View view){
+        mNothingLayout = (RelativeLayout) view.findViewById(R.id.nothing_layout);
         mTotalMoney = (TextView) view.findViewById(R.id.order_buttom_text_text);
         mXRecyclerView = (XRecyclerView) view.findViewById(R.id.order_recycle);
         mXRecyclerView.setLayoutManager( new LinearLayoutManager(view.getContext()));
@@ -136,7 +137,7 @@ public class HomeFragment2 extends Fragment {
             public void onRefresh() {
                 isChooseAll = !isChooseAll;
                 mChooseButton.setBackgroundResource(R.drawable.choose_button);//撤销全选
-                new Handler().post(new Runnable() {
+                MainActivity.getHandle().post(new Runnable() {
                     @Override
                     public void run() {
                         if(BaseUserService.getInstatnce().checkUser(mView.getContext(),mButtonBackCall)){
@@ -175,6 +176,7 @@ public class HomeFragment2 extends Fragment {
 
     public void updateOver(){//改变数量
         changeTotalMoney();
+        setNothingLayout();
         if(isChooseAll()) {
             isChooseAll = true;
             mChooseButton.setBackgroundResource(R.drawable.ischoose_bg);//撤销全选
@@ -206,6 +208,7 @@ public class HomeFragment2 extends Fragment {
     public void updataData(int position){
         data.remove(position);
         updateOver();
+        setNothingLayout();
     }
     private boolean isChooseAll(){
         for(OrderEntity orderEntity:data){
@@ -214,5 +217,12 @@ public class HomeFragment2 extends Fragment {
             }
         }
         return true;
+    }
+    private void setNothingLayout(){
+        if(data.size()<1){
+            mNothingLayout.setVisibility(View.VISIBLE);
+        }else{
+            mNothingLayout.setVisibility(View.GONE);
+        }
     }
 }
