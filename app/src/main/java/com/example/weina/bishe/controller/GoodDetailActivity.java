@@ -70,7 +70,9 @@ public class GoodDetailActivity extends AppCompatActivity{
 
     }
     public void onBackPressed(){
-        if(mChoose.getVisibility()!= View.GONE){
+        if(mGifWaitBg.getGifVisibility() == View.VISIBLE){
+            //do nothing just wait
+        }else if(mChoose.getVisibility()!= View.GONE){
             mbg.setVisibility(View.GONE);
             mChoose.startAnimation(mHiddenAction);
             mChoose.setVisibility(View.GONE);
@@ -169,17 +171,19 @@ public class GoodDetailActivity extends AppCompatActivity{
                     OrderService.addOrder(BaseUserService.getGsonLogin().getUserEntity().getUserId(), 0, mGoodsEntity.getGoodsId(), mChooseNumberView.getNumber(), new OrderService.OrderCallBack() {
                         @Override
                         public void callBack(final String data) {
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if("success".equals(data)){
-                                        successShow();
-                                    }else {
-                                        errorMsgShow();
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if ("success".equals(data)) {
+                                            successShow();
+                                        }else if ("exists".equals(data)) {
+                                            existGoods();
+                                        } else {
+                                            errorMsgShow();
+                                        }
+                                        mGifWaitBg.setGifGone();
                                     }
-                                    mGifWaitBg.setGifGone();
-                                }
-                            });
+                                });
                         }
 
                         @Override
@@ -199,6 +203,9 @@ public class GoodDetailActivity extends AppCompatActivity{
         mGifWaitBg = (GifWaitBg) findViewById(R.id.good_detail_gifView);
     }
 
+    private void existGoods(){
+        Toast.makeText(this,"订单已经存在，不要重复购买 ",Toast.LENGTH_SHORT).show();
+    }
 
     private void errorMsgShow(){
         Toast.makeText(this,"创建 订单失败 请刷新后重试 ",Toast.LENGTH_SHORT).show();

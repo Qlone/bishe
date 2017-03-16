@@ -37,7 +37,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
 
     private ChangeOrderCallBack mChangeOrderCallBack;
     public interface ChangeOrderCallBack{
-        void saveAmount(int orderId,int amount);
+        void saveAmount(int orderId,int amount,int position);
         void deleteOrder(int orderId,int position);
         void changeChoose();
     }
@@ -97,7 +97,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
                 data.get(position).setEdit(false);
                 holder.mSaveLayout.setVisibility(View.GONE);
                 if(null != mChangeOrderCallBack){
-                    mChangeOrderCallBack.saveAmount(data.get(position).getOrdersId(),holder.mChooseNumberView.getNumber());
+                    mChangeOrderCallBack.saveAmount(data.get(position).getOrdersId(),holder.mChooseNumberView.getNumber(),position);
                 }
             }
         });

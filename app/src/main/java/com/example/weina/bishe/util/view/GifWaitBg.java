@@ -61,5 +61,7 @@ public class GifWaitBg extends RelativeLayout {
             return false;
         }
     }
-
+    public int getGifVisibility(){
+        return mGifLayout.getVisibility();
+    }
 }

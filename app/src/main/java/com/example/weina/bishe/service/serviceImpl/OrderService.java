@@ -70,13 +70,14 @@ public class OrderService implements IOrderService {
         });
     }
 
-    public static void updataOrderNumber(int userId,int orderId,int amount){
+    public static void updataOrderNumber(int userId, int orderId, int amount, final OrderCallBack mOrderCallBack){
         String url = StaticString.URL +"/order/changeAmount?userId="+userId
                 +"&orderId="+orderId
                 +"&amount="+amount;
         HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
             @Override
             public void onSuccess(String data){
+                mOrderCallBack.callBack(data);
                 MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
             }
             @Override

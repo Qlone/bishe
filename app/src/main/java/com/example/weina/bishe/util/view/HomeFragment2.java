@@ -82,9 +82,26 @@ public class HomeFragment2 extends Fragment {
         };
         mChangeOrderCallBack = new OrderAdapter.ChangeOrderCallBack() {
             @Override
-            public void saveAmount(int orderId,int amount) {
+            public void saveAmount(int orderId, int amount, final int position) {
                 if(BaseUserService.getInstatnce().checkUser(mView.getContext(),mButtonBackCall)) {
-                    OrderService.updataOrderNumber(BaseUserService.getGsonLogin().getUserEntity().getUserId(),orderId,amount);
+                    OrderService.updataOrderNumber(BaseUserService.getGsonLogin().getUserEntity().getUserId(), orderId, amount, new OrderService.OrderCallBack() {
+                        @Override
+                        public void callBack(String datas) {
+                            try{
+                                int a = Integer.parseInt(datas);
+                                if(a>0){
+                                    data.get(position).setAmount(a);
+                                }
+                            }catch (Exception e){
+
+                            }
+                        }
+
+                        @Override
+                        public void error(String msg) {
+
+                        }
+                    });
                 }
             }
 
@@ -98,7 +115,6 @@ public class HomeFragment2 extends Fragment {
             @Override
             public void changeChoose() {
                 updateOver();
-                mChooseButton.setBackgroundResource(R.drawable.choose_button);//撤销全选
             }
         };
     }
@@ -118,6 +134,8 @@ public class HomeFragment2 extends Fragment {
         mXRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+                isChooseAll = !isChooseAll;
+                mChooseButton.setBackgroundResource(R.drawable.choose_button);//撤销全选
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -155,8 +173,15 @@ public class HomeFragment2 extends Fragment {
 
     }
 
-    public void updateOver(){
+    public void updateOver(){//改变数量
         changeTotalMoney();
+        if(isChooseAll()) {
+            isChooseAll = true;
+            mChooseButton.setBackgroundResource(R.drawable.ischoose_bg);//撤销全选
+        }else{
+            isChooseAll = false;
+            mChooseButton.setBackgroundResource(R.drawable.choose_button);//撤销全选
+        }
         mOrderAdapter.notifyDataSetChanged();
         mXRecyclerView.refreshComplete();
     }
@@ -181,5 +206,13 @@ public class HomeFragment2 extends Fragment {
     public void updataData(int position){
         data.remove(position);
         updateOver();
+    }
+    private boolean isChooseAll(){
+        for(OrderEntity orderEntity:data){
+            if(!orderEntity.isChoose()){
+                return false;//有一个没有选中
+            }
+        }
+        return true;
     }
 }
