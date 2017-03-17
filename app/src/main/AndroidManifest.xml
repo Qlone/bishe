@@ -28,6 +28,9 @@
         <activity android:name=".controller.SearchActivity"
             android:theme="@style/AppThemeFull.NoActionBar"
             android:label="main"></activity>
+        <activity android:name=".controller.AddressMgActivity"
+                  android:theme="@style/AppThemeFull.NoActionBar"
+                  android:label="地址管理"></activity>
     </application>
 
 </manifest>

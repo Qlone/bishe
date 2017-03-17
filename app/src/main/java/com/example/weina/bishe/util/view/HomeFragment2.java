@@ -1,5 +1,6 @@
 package com.example.weina.bishe.util.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.OrderAdapter;
+import com.example.weina.bishe.controller.AddressMgActivity;
 import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.entity.OrderEntity;
 import com.example.weina.bishe.service.IHomeService;
@@ -42,6 +44,7 @@ public class HomeFragment2 extends Fragment {
      */
     private boolean isChooseAll =false;
     private Button mChooseButton;
+    private Button mSubmit;//提交订单
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(null == mView) {
@@ -62,6 +65,15 @@ public class HomeFragment2 extends Fragment {
         return  mView;
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //AddressConfirmView.setAddressAndPhone(" 海棠5号楼2区 611","3332",getContext());
+    }
+
+
+
     public void initData(){
         if(null == data){
             data = new ArrayList<>();
@@ -120,6 +132,7 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void initView(View view){
+        mSubmit = (Button) view.findViewById(R.id.order_buttom_btn_submit);
         mNothingLayout = (RelativeLayout) view.findViewById(R.id.nothing_layout);
         mTotalMoney = (TextView) view.findViewById(R.id.order_buttom_text_text);
         mXRecyclerView = (XRecyclerView) view.findViewById(R.id.order_recycle);
@@ -169,6 +182,27 @@ public class HomeFragment2 extends Fragment {
                     orderEntity.setChoose(isChooseAll);
                 }
                 updateOver();
+            }
+        });
+        //提交按钮
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddressConfirmView addressConfirmView = new AddressConfirmView(mView.getContext());
+                addressConfirmView.setAddressCallBack(new AddressConfirmView.AddressCallBack() {
+                    @Override
+                    public void confirm() {
+
+                    }
+
+                    @Override
+                    public void change() {
+                        Intent intent = new Intent();
+                        intent.setClass(getContext(), AddressMgActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                addressConfirmView.show();
             }
         });
 

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/view_address_cancel"
+        android:src="@drawable/search_clear_pressed"
+        android:background="#00cccccc"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/view_address_address"
+            android:text=" 购物地址 :"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:maxLines="2"
+            android:textSize="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/view_address_phone"
+            android:text=" 收货电话 :"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/view_address_number"
+                android:text="购买数量 : 9"
+                android:textSize="13sp"
+                android:paddingLeft="18dp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/view_address_price"
+                android:text="总价 ￥：90"
+                android:padding="5dp"
+                android:textSize="18sp"
+                android:textColor="@color/goodPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/view_address_changeAddress"
+            android:text="修改地址"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:background="#ffb52b"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/view_adddress_confirm"
+            android:text="确认"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:background="#ff171f"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

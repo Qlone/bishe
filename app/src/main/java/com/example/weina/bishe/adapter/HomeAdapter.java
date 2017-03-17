@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public ArrayList<GoodsEntity> datas = null;
     public OnItemClickListener mLicense= null;
-    public Handler mHandler =null;
+    public static Handler mHandler =null;
     public HomeAdapter(ArrayList<GoodsEntity> datas) {
         this.datas = datas;
     }
