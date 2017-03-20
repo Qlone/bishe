@@ -26,6 +26,7 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by weina on 2017/3/8.
@@ -55,8 +56,11 @@ public class HomeFragment2 extends Fragment {
     /**
      *确认的订单 数量，价钱
      */
-    private int finalAmount;
-
+    private List<Integer> finalAmount;
+    /**
+     * 下订单 等待
+     */
+    private GifWaitBg mGifWaitBg;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(null == mView) {
@@ -146,6 +150,7 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void initView(View view){
+        mGifWaitBg = (GifWaitBg) view.findViewById(R.id.home2_gifView);
         mSubmit = (Button) view.findViewById(R.id.order_buttom_btn_submit);
         mNothingLayout = (RelativeLayout) view.findViewById(R.id.nothing_layout);
         mTotalMoney = (TextView) view.findViewById(R.id.order_buttom_text_text);
@@ -203,12 +208,42 @@ public class HomeFragment2 extends Fragment {
             @Override
             public void onClick(View view) {
                 getChooseOrderStatus();//获取买了多少件
-                if(finalAmount > 0) {//是否选择了商品
-                    addressConfirmView = new AddressConfirmView(mView.getContext(), finalAmount, money);
+                if(finalAmount.size() > 0) {//是否选择了商品
+                    mGifWaitBg.setGifShow();
+                    addressConfirmView = new AddressConfirmView(mView.getContext(), finalAmount.size(), money);
                     addressConfirmView.setAddressCallBack(new AddressConfirmView.AddressCallBack() {
                         @Override
-                        public void confirm() {
-                            //TODO: 确认下订单
+                        public void confirm(int addressId) {
+                            if(addressId>0) {
+                                addressConfirmView.onBackPressed();//关闭对话框
+                                OrderService.addOrderNotPay(finalAmount, addressId, new OrderService.OrderCallBack() {
+                                    @Override
+                                    public void callBack(final String datas) {
+                                        MainActivity.getHandle().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mGifWaitBg.setGifGone();
+                                                if(BaseUserService.getInstatnce().checkUser(mView.getContext(),mButtonBackCall)){
+                                                    OrderService.getOrder(BaseUserService.getGsonLogin().getUserEntity().getUserId(), IOrderService.ORDER_STATUS_CART,1,MAX_CART,data);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void error(String msg) {
+                                        MainActivity.getHandle().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+                                                mGifWaitBg.setGifGone();
+                                            }
+                                        });
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(getContext(),"请确认收货地址",Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
@@ -283,10 +318,14 @@ public class HomeFragment2 extends Fragment {
      * 最终确认
      */
     private void getChooseOrderStatus(){
-        finalAmount=0;
+        if(null == finalAmount){
+            finalAmount = new ArrayList<>();
+        }else {
+            finalAmount.clear();
+        }
         for(OrderEntity orderEntity:data){
             if(orderEntity.isChoose()){
-                finalAmount++;
+                finalAmount.add(orderEntity.getOrdersId());
             }
         }
     }

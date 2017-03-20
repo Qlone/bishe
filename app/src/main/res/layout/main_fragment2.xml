@@ -68,4 +68,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
+    <com.example.weina.bishe.util.view.GifWaitBg
+        android:id="@+id/home2_gifView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.example.weina.bishe.util.view.GifWaitBg>
 </RelativeLayout>

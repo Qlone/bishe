@@ -54,7 +54,7 @@ public class AddressConfirmView extends Dialog {
     private double mPrice;
 
     public interface AddressCallBack{
-        void confirm();
+        void confirm(int addressId);
         void change();
     }
 
@@ -136,7 +136,7 @@ public class AddressConfirmView extends Dialog {
                     break;
                 }
                 case R.id.view_adddress_confirm:{
-                    mAddressCallBack.confirm();
+                    mAddressCallBack.confirm(mAddressEntity.getAddressId());
                     break;
                 }
                 case R.id.view_address_changeAddress:{

@@ -57,17 +57,16 @@ public class OrderService implements IOrderService {
 
             @Override
             public void onSuccess(String data){
+                datas.clear();
+                MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
                 if(null != data) {
                     Gson gson = new Gson();
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
                     if(null != testBean) {
-                        if(null != datas) {
-                            datas.clear();
-                            datas.addAll(testBean);
-                        }
+                        datas.addAll(testBean);
                     }
-                    MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
                 }
+                MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
             }
 
             @Override
@@ -118,17 +117,17 @@ public class OrderService implements IOrderService {
     /**
      * 创建订单
      */
-    public static void addOrderNotPay(List<Integer> orderId,int addressId){
-        String url = "/order/notPayOrder";
+    public static void addOrderNotPay(List<Integer> orderId, int addressId, final OrderCallBack mOrderCallBack){
+        String url = StaticString.URL +"/order/notPayOrder";
         GsonAddOrder gsonAddOrder = new GsonAddOrder(orderId,addressId);
         HomeService.getmOkHttpUtil().postJson(url, JsonUtil.toJson(gsonAddOrder), new OkHttpUtil.HttpCallback() {
             @Override
             public void onSuccess(String data){
-                
+                mOrderCallBack.callBack(data);
             }
             @Override
             public void onError(String msg) {
-
+                mOrderCallBack.error(msg);
             }
         });
     }
