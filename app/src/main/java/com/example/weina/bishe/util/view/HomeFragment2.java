@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.OrderAdapter;
@@ -45,6 +46,17 @@ public class HomeFragment2 extends Fragment {
     private boolean isChooseAll =false;
     private Button mChooseButton;
     private Button mSubmit;//提交订单
+
+    /**
+     * 地址确认框
+     */
+    private AddressConfirmView addressConfirmView;
+
+    /**
+     *确认的订单 数量，价钱
+     */
+    private int finalAmount;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(null == mView) {
@@ -69,7 +81,9 @@ public class HomeFragment2 extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        //AddressConfirmView.setAddressAndPhone(" 海棠5号楼2区 611","3332",getContext());
+        if(null != addressConfirmView) {
+            addressConfirmView.reinit();
+        }
     }
 
 
@@ -188,21 +202,26 @@ public class HomeFragment2 extends Fragment {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddressConfirmView addressConfirmView = new AddressConfirmView(mView.getContext());
-                addressConfirmView.setAddressCallBack(new AddressConfirmView.AddressCallBack() {
-                    @Override
-                    public void confirm() {
+                getChooseOrderStatus();//获取买了多少件
+                if(finalAmount > 0) {//是否选择了商品
+                    addressConfirmView = new AddressConfirmView(mView.getContext(), finalAmount, money);
+                    addressConfirmView.setAddressCallBack(new AddressConfirmView.AddressCallBack() {
+                        @Override
+                        public void confirm() {
+                            //TODO: 确认下订单
+                        }
 
-                    }
-
-                    @Override
-                    public void change() {
-                        Intent intent = new Intent();
-                        intent.setClass(getContext(), AddressMgActivity.class);
-                        startActivity(intent);
-                    }
-                });
-                addressConfirmView.show();
+                        @Override
+                        public void change() {
+                            Intent intent = new Intent();
+                            intent.setClass(getContext(), AddressMgActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    addressConfirmView.show();
+                }else{
+                    Toast.makeText(getContext(),"没有选择商品",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -257,6 +276,18 @@ public class HomeFragment2 extends Fragment {
             mNothingLayout.setVisibility(View.VISIBLE);
         }else{
             mNothingLayout.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 最终确认
+     */
+    private void getChooseOrderStatus(){
+        finalAmount=0;
+        for(OrderEntity orderEntity:data){
+            if(orderEntity.isChoose()){
+                finalAmount++;
+            }
         }
     }
 }

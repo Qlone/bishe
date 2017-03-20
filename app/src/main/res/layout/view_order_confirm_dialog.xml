@@ -35,6 +35,14 @@
             android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/view_address_reciver"
+            android:text=" 收 货 人 :"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

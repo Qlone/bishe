@@ -9,6 +9,15 @@ public class AddressEntity {
     private String mPhone;
     private Integer mUserId;
     private String mName;
+    private boolean isChoose;
+
+    public boolean isChoose() {
+        return isChoose;
+    }
+
+    public void setChoose(boolean choose) {
+        isChoose = choose;
+    }
 
     public Integer getAddressId() {
         return mAddressId;

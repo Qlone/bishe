@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.weina.bishe.R;
+import com.example.weina.bishe.entity.AddressEntity;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 
 /**
@@ -28,33 +29,41 @@ public class AddressConfirmView extends Dialog {
     private static final String ADDRESS_SP = "addresSp";
     private static final String ADDRESS_NAME = "address";
     private static final String PHONE_NAME = "phone";
+    private static final String RECIVER_NAME = "revicer";
+    private static final String ADDRESSID_NAME = "addressId";
 
     private Context mContext;
     /**
      * 地址和 电话
      */
-    private String mAddress;
-    private String mPhone;
+    private AddressEntity mAddressEntity;
 
     private ImageButton mCancel;
     private TextView mAddressView;
     private TextView mPhoneView;
-    private TextView mAmountView;
-    private TextView mPriceView;
+    private TextView mReviverView;
 
     private Button mChangeAddress;
     private Button mConfirm;
     private AddressCallBack mAddressCallBack;
+
+
+    private TextView mAmountView;
+    private TextView mPriceView;
+    private int mAmount;
+    private double mPrice;
 
     public interface AddressCallBack{
         void confirm();
         void change();
     }
 
-    public AddressConfirmView(Context context) {
+    public AddressConfirmView(Context context,int amount,double price) {
         super(context);
         this.mContext =context;
         requestWindowFeature(Window.FEATURE_NO_TITLE);//不要标题
+        mAmount = amount;
+        mPrice = price;
 
     }
     @Override
@@ -66,7 +75,7 @@ public class AddressConfirmView extends Dialog {
         initView();
     }
     private void initData(){
-        getAddressAndPhone();//获取缓存的地址和号码
+        mAddressEntity = getAddressAndPhone(getContext());//获取缓存的地址和号码
     }
     private void initView(){
         mCancel = (ImageButton) findViewById(R.id.view_address_cancel);
@@ -74,8 +83,16 @@ public class AddressConfirmView extends Dialog {
         mChangeAddress = (Button) findViewById(R.id.view_address_changeAddress);
         mAddressView = (TextView) findViewById(R.id.view_address_address);
         mPhoneView = (TextView) findViewById(R.id.view_address_phone);
-        mAddressView.setText(" 购物地址 :"+mAddress);
-        mPhoneView.setText(" 收货电话 :"+mPhone);
+        mReviverView = (TextView) findViewById(R.id.view_address_reciver);
+        mPriceView = (TextView)findViewById(R.id.view_address_price);
+        mAmountView = (TextView) findViewById(R.id.view_address_number);
+        mAddressView.setText(" 购物地址 :"+mAddressEntity.getAddress());
+        mPhoneView.setText(" 收货电话 :"+mAddressEntity.getPhone());
+        mReviverView.setText(" 收 货 人 :"+mAddressEntity.getName());
+        mAmountView.setText("购买数量 : "+mAmount);
+        mPriceView.setText("总价 ￥："+mPrice);
+
+
         mCancel.setOnClickListener(new clickListener());
         mConfirm.setOnClickListener(new clickListener());
         mChangeAddress.setOnClickListener(new clickListener());
@@ -120,7 +137,6 @@ public class AddressConfirmView extends Dialog {
                 }
                 case R.id.view_adddress_confirm:{
                     mAddressCallBack.confirm();
-                    setAddressAndPhone("西电海棠5号楼","22",mContext);
                     break;
                 }
                 case R.id.view_address_changeAddress:{
@@ -134,24 +150,41 @@ public class AddressConfirmView extends Dialog {
     public void setAddressCallBack(AddressCallBack addressCallBack) {
         mAddressCallBack = addressCallBack;
     }
+
+    /**
+     * 重新加载
+     */
+    public void reinit(){
+        mAddressEntity = getAddressAndPhone(getContext());//获取缓存的地址和号码
+        mAddressView.setText(" 购物地址 :"+mAddressEntity.getAddress());
+        mPhoneView.setText(" 收货电话 :"+mAddressEntity.getPhone());
+        mReviverView.setText(" 收 货 人 :"+mAddressEntity.getName());
+    }
+
     /**
      * 获取 上一次的 地址 手机号， 保存上一次的地址和手机号
      */
-    public void getAddressAndPhone(){
+    public static AddressEntity getAddressAndPhone(Context context){
+        AddressEntity addressEntity = new AddressEntity();
         String userId = userId = String.valueOf(BaseUserService.getGsonLogin().getUserEntity().getUserId());
         //步骤1：创建一个SharedPreferences接口对象
-        SharedPreferences read = mContext.getSharedPreferences(ADDRESS_SP, mContext.MODE_PRIVATE);
+        SharedPreferences read = context.getSharedPreferences(ADDRESS_SP, context.MODE_PRIVATE);
         //步骤2：获取文件中的值
-        mAddress = read.getString(ADDRESS_NAME+userId, "");
-        mPhone = read.getString(PHONE_NAME+userId,"");
+        addressEntity.setAddress(read.getString(ADDRESS_NAME+userId, ""));
+        addressEntity.setPhone(read.getString(PHONE_NAME+userId,""));
+        addressEntity.setName(read.getString(RECIVER_NAME+userId,""));
+        addressEntity.setAddressId(read.getInt(ADDRESSID_NAME+userId,-1));
+        return addressEntity;
     }
-    public static void  setAddressAndPhone(String address,String phone,Context context){
+    public static void  setAddressAndPhone(int addressId,String address,String name,String phone,Context context){
         String userId = String.valueOf(BaseUserService.getGsonLogin().getUserEntity().getUserId());
         //步骤2-1：创建一个SharedPreferences.Editor接口对象，lock表示要写入的XML文件名，MODE_WORLD_WRITEABLE写操作
         SharedPreferences.Editor editor = context.getSharedPreferences(ADDRESS_SP, context.MODE_PRIVATE).edit();
         //步骤2-2：将获取过来的值放入文件
         editor.putString(ADDRESS_NAME+userId, address);
         editor.putString(PHONE_NAME+userId,phone);
+        editor.putString(RECIVER_NAME+userId,name);
+        editor.putInt(ADDRESSID_NAME+userId,addressId);
         //步骤3：提交
         editor.commit();
     }

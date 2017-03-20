@@ -6,8 +6,12 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.AddressAdapter;
@@ -16,6 +20,7 @@ import com.example.weina.bishe.service.IAddressService;
 import com.example.weina.bishe.service.serviceImpl.AddressService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
 import com.example.weina.bishe.util.view.AddAddressDialogView;
+import com.example.weina.bishe.util.view.AddressConfirmView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -35,7 +40,15 @@ public class AddressMgActivity extends AppCompatActivity {
      */
     private Button mAddAddress;
     private Button mConfirmAddress;
+    private AddressAdapter.onClickLisener mOnClickLisener;//删除回调
     private AddAddressDialogView addAddressDialogView;
+
+    /**
+     * 默认地址
+     */
+    private TextView mHeaderAddress;
+    private TextView mHeaderPhone;
+    private TextView mHeaderRecvicer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +86,42 @@ public class AddressMgActivity extends AppCompatActivity {
                 }
             }
         };
+        mOnClickLisener = new AddressAdapter.onClickLisener() {
+            @Override
+            public void delete(final int position) {
+                AddressService.deleteAddress(data.get(position).getAddressId(), new AddressService.AddressCallBack() {
+                    @Override
+                    public void success(String datas) {
+                        if("true".equals(datas)){
+                            AddressService.getAddressList(data);
+                            AddressMgActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    clearAddressStatus(data.get(position).getAddressId());
+                                }
+                            });
+                        }else {
+                            AddressMgActivity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(AddressMgActivity.this," 删除失败 ",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void error() {
+                        AddressMgActivity.getHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(AddressMgActivity.this," 请稍后重试 ",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+        };
     }
 
     private void initView(){//初始化界面
@@ -97,12 +146,39 @@ public class AddressMgActivity extends AppCompatActivity {
                 mXRecyclerView.loadMoreComplete();
             }
         });
+        mAddressAdapter.setOnClickLisener(mOnClickLisener);
         mXRecyclerView.setAdapter(mAddressAdapter);
         //第一次进入刷新
         AddressService.getAddressList(data);
 
         mAddAddress = (Button) findViewById(R.id.view_address_addAddress);
         mAddAddress.setOnClickListener(new clickListener());
+        //添加头
+        View header =   LayoutInflater.from(this).inflate(R.layout.address_recycle_header, (ViewGroup)findViewById(android.R.id.content),false);
+        mXRecyclerView.addHeaderView(header);
+        /**
+         * 绑定头 view
+         */
+        mHeaderPhone  = (TextView) header.findViewById(R.id.address_header_phone);
+        mHeaderAddress = (TextView) header.findViewById(R.id.address_header_address);
+        mHeaderRecvicer = (TextView)header.findViewById(R.id.address_header_recvicer);
+        /**
+         * 绑定view
+         */
+        mConfirmAddress = (Button)findViewById(R.id.view_adddress_setAddress);
+        mConfirmAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(AddressEntity addressEntity:data){
+                    if(addressEntity.isChoose()){
+                        AddressConfirmView.setAddressAndPhone(addressEntity.getAddressId(),addressEntity.getAddress(),addressEntity.getName(),addressEntity.getPhone(),AddressMgActivity.this);
+                        Toast.makeText(AddressMgActivity.this,"设置成功",Toast.LENGTH_SHORT).show();
+                        getAddressStatus();//更改显示
+                    }
+                }
+            }
+        });
+        getAddressStatus();//更改显示
     }
 
     private class clickListener implements View.OnClickListener{
@@ -125,5 +201,21 @@ public class AddressMgActivity extends AppCompatActivity {
     private void updataOver(){
         mAddressAdapter.notifyDataSetChanged();
         mXRecyclerView.refreshComplete();
+    }
+
+    //获取 默认地址信息
+    private void getAddressStatus(){
+        AddressEntity addressEntity =  AddressConfirmView.getAddressAndPhone(AddressMgActivity.this);
+        mHeaderAddress.setText( " 默认地址  :"+addressEntity.getAddress());
+        mHeaderPhone.setText(   " 默认手机    :"+addressEntity.getPhone());
+        mHeaderRecvicer.setText(" 默认收件人:"+addressEntity.getName());
+    }
+    //清除 默认地址
+    private void clearAddressStatus(int addressId){
+        AddressEntity addressEntity =  AddressConfirmView.getAddressAndPhone(AddressMgActivity.this);
+        if(addressId == addressEntity.getAddressId()){
+            AddressConfirmView.setAddressAndPhone(-1,"","","",AddressMgActivity.this);
+        }
+        getAddressStatus();
     }
 }

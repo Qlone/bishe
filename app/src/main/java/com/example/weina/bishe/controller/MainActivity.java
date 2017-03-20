@@ -20,6 +20,7 @@ import com.example.weina.bishe.bean.MenuList;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.util.view.HomeFragment;
 import com.example.weina.bishe.util.view.HomeFragment2;
+import com.example.weina.bishe.util.view.HomeFragment3;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private LayoutInflater layoutInflater;
 
     //定义数组来存放Fragment界面
-    private Class fragmentArray[] = {HomeFragment.class,HomeFragment2.class,HomeFragment2.class};
+    private Class fragmentArray[] = {HomeFragment.class,HomeFragment2.class,HomeFragment3.class};
 
     //定义数组来存放按钮图片
     private int mImageViewArray[] = {R.drawable.home_button,R.drawable.cart_button,R.drawable.me_button};

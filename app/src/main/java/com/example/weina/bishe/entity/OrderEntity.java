@@ -18,9 +18,17 @@ public class OrderEntity {
     private String mStatus;
     private Integer mAmount;
     private Integer mUserId;
-
+    private String mReciver;
     private boolean isChoose =false;
     private boolean isEdit = false;
+
+    public String getReciver() {
+        return mReciver;
+    }
+
+    public void setReciver(String reciver) {
+        mReciver = reciver;
+    }
 
     public boolean isEdit() {
         return isEdit;

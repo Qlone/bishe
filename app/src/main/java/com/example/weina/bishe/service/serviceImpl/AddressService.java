@@ -17,6 +17,10 @@ import java.util.List;
  */
 public class AddressService implements IAddressService {
 
+    public interface AddressCallBack{
+        void success(String data);
+        void error();
+    }
     //获取地址
     public static void getAddressList(final ArrayList<AddressEntity> list){
         if(BaseUserService.getGsonLogin().isBoolean()){//若合法
@@ -70,6 +74,24 @@ public class AddressService implements IAddressService {
                 @Override
                 public void onError(String msg) {
                     AddressMgActivity.getHandler().sendEmptyMessage(IAddressService.ADDRESS_ADD_ELSE);
+                }
+            });
+        }
+    }
+    //删除地址
+    public static void deleteAddress(int addressId , final AddressCallBack addressCallBack){
+        if(BaseUserService.getGsonLogin().isBoolean()){//合法
+            String url = StaticString.URL+"/address/delete?userId="
+                    +BaseUserService.getGsonLogin().getUserEntity().getUserId()
+                    +"&addressId="+addressId;
+            HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+                @Override
+                public void onSuccess(String data){
+                    addressCallBack.success(data);
+                }
+                @Override
+                public void onError(String msg) {
+                    addressCallBack.error();
                 }
             });
         }

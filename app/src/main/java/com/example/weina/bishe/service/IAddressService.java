@@ -9,4 +9,6 @@ public interface IAddressService {
     int ADDRESS_ADD_SUCCESS = 6;//地址添加成功
     int ADDRESS_ADD_FAIL =7;//地址添加失败
     int ADDRESS_ADD_ELSE=8;//服务器错误
+
+    int ADDRESS_DELETE_UPDATA =9;//更新ui 删除数据
 }

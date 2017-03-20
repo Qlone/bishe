@@ -3,11 +3,13 @@ package com.example.weina.bishe.service.serviceImpl;
 import android.os.Bundle;
 import android.os.Message;
 
+import com.example.weina.bishe.bean.GsonAddOrder;
 import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.entity.OrderEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.IOrderService;
 import com.example.weina.bishe.service.StaticString;
+import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +27,9 @@ public class OrderService implements IOrderService {
         void error(String msg);
     }
 
+    /**
+     *购物车
+     */
     public static void addOrder(int userId, int addressId, int goodsId, int amount, final OrderCallBack orderCallBack){
         String url = StaticString.URL +"/order/add?userId="+userId
                 +"&addressId="+addressId
@@ -56,8 +61,10 @@ public class OrderService implements IOrderService {
                     Gson gson = new Gson();
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
                     if(null != testBean) {
-                        datas.clear();
-                        datas.addAll(testBean);
+                        if(null != datas) {
+                            datas.clear();
+                            datas.addAll(testBean);
+                        }
                     }
                     MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
                 }
@@ -107,4 +114,23 @@ public class OrderService implements IOrderService {
             }
         });
     }
+
+    /**
+     * 创建订单
+     */
+    public static void addOrderNotPay(List<Integer> orderId,int addressId){
+        String url = "/order/notPayOrder";
+        GsonAddOrder gsonAddOrder = new GsonAddOrder(orderId,addressId);
+        HomeService.getmOkHttpUtil().postJson(url, JsonUtil.toJson(gsonAddOrder), new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                
+            }
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
+    }
+
 }
