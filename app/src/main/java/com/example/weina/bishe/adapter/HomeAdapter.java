@@ -57,9 +57,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 .build();
         viewHolder.mSimpleDraweeView.setController(controller);
 
-        viewHolder.mItemSales.setText(datas.get(position).getSales()+"人付款");
+        viewHolder.mItemSales.setText(datas.get(position).getViews()+"人付款");
         viewHolder.mItemPrice.setText("￥ "+datas.get(position).getPrice());
-
+        viewHolder.mItemGoodSales.setText(datas.get(position).getSales()+"件卖出");
         if(null !=datas.get(position).getStatus()) {
             switch (datas.get(position).getStatus()) {
                 case "hot":
@@ -97,6 +97,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         public TextView mItemTitle;
         public TextView mItemPrice;
         public TextView mItemSales;
+        public TextView mItemGoodSales;
         public ImageView mItemPicture;
         public SimpleDraweeView mSimpleDraweeView;
         public ImageView mItemTypes;
@@ -108,7 +109,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 //            mItemPicture = (ImageView)view.findViewById(R.id.item_img);
             mSimpleDraweeView = (SimpleDraweeView) view.findViewById(R.id.item_img);
             mItemTypes = (ImageView)view.findViewById(R.id.item_type);
-
+            mItemGoodSales = (TextView) view.findViewById(R.id.item_goodsales);
             //设置宽高比例
             mSimpleDraweeView.setAspectRatio(1f);
             //设置对其方式

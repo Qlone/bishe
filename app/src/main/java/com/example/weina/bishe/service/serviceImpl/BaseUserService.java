@@ -63,7 +63,9 @@ public class BaseUserService implements IBaseUserService{
 
                 @Override
                 public void doCancel() {
-                    mButtonBackCall.doCancel();
+                    if(null!= mButtonBackCall) {
+                        mButtonBackCall.doCancel();
+                    }
                 }
             });
             loginDialog.show();

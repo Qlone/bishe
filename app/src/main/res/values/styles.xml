@@ -50,4 +50,12 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
     </style>
+
+    <style name="orderButton">
+        <item name="android:background">@drawable/order_stauts_button</item>
+    </style>
+
+    <style name="payPassword">
+        <item name="android:textSize">15dp</item>
+    </style>
 </resources>

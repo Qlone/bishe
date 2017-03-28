@@ -5,6 +5,7 @@ import android.os.Message;
 
 import com.example.weina.bishe.bean.GsonAddOrder;
 import com.example.weina.bishe.controller.MainActivity;
+import com.example.weina.bishe.controller.OrderMgActivity;
 import com.example.weina.bishe.entity.OrderEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.IOrderService;
@@ -57,12 +58,12 @@ public class OrderService implements IOrderService {
 
             @Override
             public void onSuccess(String data){
-                datas.clear();
-                MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
+                
                 if(null != data) {
                     Gson gson = new Gson();
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
                     if(null != testBean) {
+                        datas.clear();
                         datas.addAll(testBean);
                     }
                 }
@@ -131,5 +132,99 @@ public class OrderService implements IOrderService {
             }
         });
     }
+    /**
+     * 订单管理 获取 状态
+     */
+    public static void getOrderToMg(int userId,String status,int page,int lines,final ArrayList<OrderEntity> datas){
+        String url = StaticString.URL +"/order/cart?userId="+userId
+                +"&status="+status
+                +"&page="+page
+                +"&lines="+lines;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
 
+            @Override
+            public void onSuccess(String data){
+                if(null != data) {
+                    Gson gson = new Gson();
+                    List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
+                    if(null != testBean) {
+                        datas.clear();
+                        datas.addAll(testBean);
+                    }
+                }
+                OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.UPDATA_OVER);
+            }
+
+            @Override
+            public void onError(String msg) {
+                OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.UPDATA_OVER);
+            }
+        });
+    }
+    //删除订单
+    public static void delete(int userId, int orderId){
+        String url = StaticString.URL +"/order/delete?userId="+userId
+                +"&orderId="+orderId;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.DELETE_OVER);
+            }
+            @Override
+            public void onError(String msg) {
+                //TODO:
+            }
+        });
+    }
+    public static void pay(List<Integer> list, final OrderCallBack orderCallBack){
+        GsonAddOrder gsonAddOrder = new GsonAddOrder();
+        gsonAddOrder.setOrderIdList(list);
+        String url = StaticString.URL +"/order/pay";
+        HomeService.getmOkHttpUtil().postJson(url, JsonUtil.toJson(gsonAddOrder), new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                orderCallBack.callBack(data);
+            }
+
+            @Override
+            public void onError(String msg) {
+                orderCallBack.error(msg);
+            }
+        });
+    }
+
+    //直接购买
+    public static void addOrderNoCart(int userId, int addressId, int goodsId, int amount, final OrderCallBack orderCallBack){
+        String url = StaticString.URL +"/order/addNoCart?userId="+userId
+                +"&addressId="+addressId
+                +"&goodsId="+goodsId
+                +"&amount="+amount;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+
+            @Override
+            public void onSuccess(String data){
+                orderCallBack.callBack(data);
+            }
+
+            @Override
+            public void onError(String msg) {
+                orderCallBack.callBack(msg);
+            }
+        });
+    }
+    public static void orderGet(int userId,int orderId){
+        String url = StaticString.URL +"/order/accept?userId="+userId
+                +"&orderId="+orderId;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+
+                OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.GET_OVER);
+            }
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
+    }
 }

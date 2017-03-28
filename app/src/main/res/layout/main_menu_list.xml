@@ -8,6 +8,7 @@
         android:id="@+id/menu_text"
         android:text=" 个人中心"
         style="@style/menuText"
+        android:drawablePadding="10dp"
         android:drawableLeft="@drawable/search_clear_pressed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

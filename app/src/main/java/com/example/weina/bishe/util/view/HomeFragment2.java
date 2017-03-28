@@ -16,6 +16,7 @@ import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.OrderAdapter;
 import com.example.weina.bishe.controller.AddressMgActivity;
 import com.example.weina.bishe.controller.MainActivity;
+import com.example.weina.bishe.controller.PayActivity;
 import com.example.weina.bishe.entity.OrderEntity;
 import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.IOrderService;
@@ -209,12 +210,12 @@ public class HomeFragment2 extends Fragment {
             public void onClick(View view) {
                 getChooseOrderStatus();//获取买了多少件
                 if(finalAmount.size() > 0) {//是否选择了商品
-                    mGifWaitBg.setGifShow();
                     addressConfirmView = new AddressConfirmView(mView.getContext(), finalAmount.size(), money);
                     addressConfirmView.setAddressCallBack(new AddressConfirmView.AddressCallBack() {
                         @Override
                         public void confirm(int addressId) {
                             if(addressId>0) {
+                                mGifWaitBg.setGifShow();
                                 addressConfirmView.onBackPressed();//关闭对话框
                                 OrderService.addOrderNotPay(finalAmount, addressId, new OrderService.OrderCallBack() {
                                     @Override
@@ -226,6 +227,17 @@ public class HomeFragment2 extends Fragment {
                                                 if(BaseUserService.getInstatnce().checkUser(mView.getContext(),mButtonBackCall)){
                                                     OrderService.getOrder(BaseUserService.getGsonLogin().getUserEntity().getUserId(), IOrderService.ORDER_STATUS_CART,1,MAX_CART,data);
                                                 }
+                                                /**
+                                                 * 打开支付页面
+                                                 */
+                                                ArrayList<Integer> list = new ArrayList<Integer>();
+                                                for(OrderEntity orderEntity:data){
+                                                    if(orderEntity.isChoose()) {
+                                                        list.add(orderEntity.getOrdersId());
+                                                    }
+                                                }
+                                                PayActivity.openPay(getContext(),list);
+
                                             }
                                         });
                                     }
@@ -329,4 +341,6 @@ public class HomeFragment2 extends Fragment {
             }
         }
     }
+
+
 }

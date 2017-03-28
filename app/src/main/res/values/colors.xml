@@ -15,4 +15,5 @@
     <color name="btn_pressed_color">#47ffffff</color>
     <color name="goodPrice">#ff690a</color>
     <color name="goodTitle">#7b7775</color>
+    <color name="payButton">#e5cccccc</color>
 </resources>

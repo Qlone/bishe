@@ -1,5 +1,6 @@
 package com.example.weina.bishe.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.MenuAdapter;
 import com.example.weina.bishe.bean.MenuList;
 import com.example.weina.bishe.service.IHomeService;
+import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.util.view.HomeFragment;
 import com.example.weina.bishe.util.view.HomeFragment2;
 import com.example.weina.bishe.util.view.HomeFragment3;
@@ -67,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initData(){
         mMenuLists = new ArrayList<>();
-        mMenuLists.add(new MenuList("hello",0));
+        mMenuLists.add(new MenuList("hello",R.drawable.search_clear_pressed));
+        mMenuLists.add(new MenuList("订单管理",R.drawable.menu_order));
         mhandler = new Handler(){
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -120,10 +123,22 @@ public class MainActivity extends AppCompatActivity {
         MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this,R.layout.main_menu_list,mMenuLists);
         ListView listView = (ListView) findViewById(R.id.menu_list);
         listView.setAdapter(menuAdapter);
+        /**
+         * 菜单管理
+         */
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                switch (i){
+                    case 1:{//
+                        if(BaseUserService.getInstatnce().checkUser(MainActivity.this,null)) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, OrderMgActivity.class);
+                            startActivity(intent);
+                        }
+                        break;
+                    }
+                }
             }
         });
 

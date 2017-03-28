@@ -31,6 +31,12 @@
         <activity android:name=".controller.AddressMgActivity"
                   android:theme="@style/AppThemeFull.NoActionBar"
                   android:label="地址管理"></activity>
+        <activity android:name=".controller.OrderMgActivity"
+                  android:theme="@style/AppThemeFull.NoActionBar"
+                  android:label="订单管理"></activity>
+        <activity android:name=".controller.PayActivity"
+                  android:theme="@style/AppThemeFull.NoActionBar"
+                  android:label="支付"></activity>
     </application>
 
 </manifest>

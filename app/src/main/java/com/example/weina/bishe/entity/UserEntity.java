@@ -15,10 +15,19 @@ public class UserEntity {
     private String userType;
     private String userStatus;
     private Double balance;
+    private Integer mPayPassword;
 
     public UserEntity(String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+
+    public Integer getPayPassword() {
+        return mPayPassword;
+    }
+
+    public void setPayPassword(Integer payPassword) {
+        mPayPassword = payPassword;
     }
 
     public UserEntity() {

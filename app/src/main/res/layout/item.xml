@@ -48,12 +48,24 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/item_sales"
-            android:text="11 人付款"
-            android:textSize="14sp"
-            android:textColor="@color/goodTitle"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/item_sales"
+                android:text="11 人付款"
+                android:textSize="14sp"
+                android:textColor="@color/goodTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/item_goodsales"
+                android:text="11 件卖出"
+                android:textSize="14sp"
+                android:textColor="@color/goodTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
