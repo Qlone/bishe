@@ -37,6 +37,12 @@
         <activity android:name=".controller.PayActivity"
                   android:theme="@style/AppThemeFull.NoActionBar"
                   android:label="支付"></activity>
+        <activity android:name=".controller.CommentActivity"
+                  android:theme="@style/AppThemeFull.NoActionBar"
+                  android:label="评论"></activity>
+        <activity android:name=".controller.CommentListActivity"
+        android:theme="@style/AppThemeFull.NoActionBar"
+        android:label="所有评论"></activity>
     </application>
 
 </manifest>

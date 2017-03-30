@@ -64,6 +64,7 @@ public class OrderService implements IOrderService {
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
                     if(null != testBean) {
                         datas.clear();
+                        MainActivity.getHandle().sendEmptyMessage(IHomeService.ORDER_UPDATA_OVER);
                         datas.addAll(testBean);
                     }
                 }
@@ -135,7 +136,7 @@ public class OrderService implements IOrderService {
     /**
      * 订单管理 获取 状态
      */
-    public static void getOrderToMg(int userId,String status,int page,int lines,final ArrayList<OrderEntity> datas){
+    public static synchronized void getOrderToMg(int userId,String status,int page,int lines,final ArrayList<OrderEntity> datas){
         String url = StaticString.URL +"/order/cart?userId="+userId
                 +"&status="+status
                 +"&page="+page
@@ -144,11 +145,12 @@ public class OrderService implements IOrderService {
 
             @Override
             public void onSuccess(String data){
+                datas.clear();
+                OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.UPDATA_OVER);
                 if(null != data) {
                     Gson gson = new Gson();
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
                     if(null != testBean) {
-                        datas.clear();
                         datas.addAll(testBean);
                     }
                 }

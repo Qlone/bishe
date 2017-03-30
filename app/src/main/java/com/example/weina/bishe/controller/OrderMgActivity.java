@@ -314,10 +314,23 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
-    private void buttonComment(Button button,int position){
+    private void buttonComment(Button button, final int position){
         button.setText("立即评价");
         button.setBackgroundResource(R.drawable.order_edit_btn);
-        button.setOnClickListener(null);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(BaseUserService.getGsonLogin().isBoolean()) {//检查是否合法
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(CommentActivity.COMMENT_ORDER_BUNDLE,data.get(position).getOrdersId());
+                    bundle.putInt(CommentActivity.COMMENT_GOOD_BUNDLE,data.get(position).getGoodsId());
+                    intent.putExtras(bundle);
+                    intent.setClass(OrderMgActivity.this, CommentActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 }

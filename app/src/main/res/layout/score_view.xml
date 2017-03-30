@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/score1"
+        android:src="@drawable/five"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/score2"
+        android:src="@drawable/five"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/score3"
+        android:src="@drawable/five"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/score4"
+        android:src="@drawable/five"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/score5"
+        android:src="@drawable/five"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

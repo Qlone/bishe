@@ -58,4 +58,11 @@
     <style name="payPassword">
         <item name="android:textSize">15dp</item>
     </style>
+
+    <style name="personMenu">
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:textColor">#ecff5607</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
 </resources>

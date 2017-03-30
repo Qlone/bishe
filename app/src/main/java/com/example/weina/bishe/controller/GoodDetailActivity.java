@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
+import com.example.weina.bishe.service.serviceImpl.CommentService;
 import com.example.weina.bishe.service.serviceImpl.GoodsService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
 import com.example.weina.bishe.util.view.AddressConfirmView;
@@ -72,6 +73,10 @@ public class GoodDetailActivity extends AppCompatActivity{
     boolean isBuy;
     //句柄
     private static Handler mHandler;
+    // 分数，评论人数
+    private double mScore;
+    private long mCommentCount;
+    private Button mCommentBtn;
     /**
      *
      * 等待条
@@ -152,6 +157,19 @@ public class GoodDetailActivity extends AppCompatActivity{
             }
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+        mCommentBtn =(Button) findViewById(R.id.good_detail_comment);
+        mCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putInt(CommentListActivity.COMMENTLIS_BUNDLE,mGoodsEntity.getGoodsId());
+                intent.putExtras(bundle);
+                intent.setClass(GoodDetailActivity.this,CommentListActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         mTitle = (TextView) findViewById(R.id.good_detail_title);
         mSales = (TextView) findViewById(R.id.good_sales);
@@ -236,6 +254,7 @@ public class GoodDetailActivity extends AppCompatActivity{
             mChooseNumberView.setMaxNumber(mGoodsEntities.get(0).getStock());
             mStockText.setText("库存数量: " + mGoodsEntities.get(0).getStock());
             mPrice.setText("￥ " + mGoodsEntities.get(0).getPrice());
+            getScore();
         }
     }
 
@@ -338,6 +357,48 @@ public class GoodDetailActivity extends AppCompatActivity{
             }
         });
         mAddressConfirmView.show();
+    }
+
+    private void getScore(){
+        CommentService.getScore(mGoodsEntity.getGoodsId(), new CommentService.CommentServiceCallBack() {
+            @Override
+            public void onCallBack(String datas) {
+                if(null!=datas&&!"".equals(datas)){
+                    mScore = Double.parseDouble(datas);
+                }else {
+                    mScore =0;
+                }
+                getCommentCount();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+    private void getCommentCount(){
+        CommentService.getCommentCount(mGoodsEntity.getGoodsId(), new CommentService.CommentServiceCallBack() {
+            @Override
+            public void onCallBack(String datas) {
+                if(null!=datas&&!"".equals(datas)){
+                    mCommentCount =Long.parseLong(datas);
+                }else {
+                    mCommentCount=0;
+                }
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCommentBtn.setText(mScore+" 分 "+"查看所有评论("+mCommentCount+")");
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
 }

@@ -13,6 +13,15 @@ public class CommentEntity {
     private Date mCommentData;
     private String mContext;
     private Integer mStart;
+    private String mUserName;
+
+    public String getUserName() {
+        return mUserName;
+    }
+
+    public void setUserName(String userName) {
+        mUserName = userName;
+    }
 
     public Integer getCommentId() {
         return mCommentId;

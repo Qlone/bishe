@@ -132,6 +132,11 @@ public class BaseUserService implements IBaseUserService{
 
         return false;
     }
+    public static void logout(){
+        sGsonLogin.setBoolean(false);
+        sGsonLogin.setUserEntity(null);
+    }
+
 
     public static GsonLogin getGsonLogin() {
         return sGsonLogin;

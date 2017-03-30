@@ -41,8 +41,8 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            android:id="@+id/good_detail_img"
             android:layout_weight="1"
+            android:id="@+id/good_detail_img"
             app:placeholderImage="@drawable/login_wait"
             fresco:placeholderImage="@drawable/login_wait"
             fresco:placeholderImageScaleType="fitXY"  />
@@ -93,6 +93,20 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
+        <Button
+            android:id="@+id/good_detail_comment"
+            android:layout_gravity="center"
+            android:text="0.0分 查看所有评论(0)"
+            android:textColor="@color/colorPrimaryDark"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/commet_detail_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+
+
     </LinearLayout>
 
     <!--标题 灰色-->
@@ -170,6 +184,7 @@
                     android:layout_height="match_parent"/>
             </LinearLayout>
         </RelativeLayout>
+
         <Button
             android:id="@+id/good_detail_btn_confirm"
             android:text="confirm"

@@ -1,17 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              tools:context=".controller.CommentActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/comment_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
     <RelativeLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"></RelativeLayout>
+        android:layout_height="0dp">
+        <!--内部内容-->
+        <LinearLayout
+            android:id="@+id/comment_linear"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <com.example.weina.bishe.util.view.ScoreView
+                android:id="@+id/comment_scoreView"
+                android:layout_width="200dp"
+                android:layout_marginLeft="15dp"
+                android:layout_height="40dp">
+
+            </com.example.weina.bishe.util.view.ScoreView>
+            <TextView
+                android:id="@+id/comment_scoreText"
+                android:text="5 分"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:gravity="bottom"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/comment_wordCount"
+                android:layout_weight="1"
+                android:gravity="right|bottom"
+                android:text="0"
+                android:textColor="@color/red"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:gravity="right|bottom"
+                android:text="/200"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <EditText
+            android:layout_margin="15dp"
+            android:inputType="textMultiLine"
+            android:gravity="left|top"
+            android:background="@drawable/comment_text_selector"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/comment_linear"
+            android:id="@+id/editText"/>
+    </RelativeLayout>
     <TextView
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
     <Button
+        android:id="@+id/comment_confrim_btn"
         android:text=" 确认 "
         android:textColor="@color/white"
         android:textSize="15sp"

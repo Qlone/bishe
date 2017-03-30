@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.MenuAdapter;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
  * Created by weina on 2017/2/12.
  */
 public class MainActivity extends AppCompatActivity {
+
+    private boolean isBack;
     private ArrayList<MenuList> mMenuLists;
     private static Handler mhandler;
     public static final String GOOD_BUNDLE = "good_bundle";
@@ -66,11 +69,34 @@ public class MainActivity extends AppCompatActivity {
         initView();
 
     }
+    @Override
+    public void onBackPressed() {
+            if(isBack){
+                super.onBackPressed();
+            }else{
+                isBack =true;
+                Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                            isBack = false;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+            }
+    }
 
     private void initData(){
+        isBack =false;//点击两次返回
         mMenuLists = new ArrayList<>();
-        mMenuLists.add(new MenuList("hello",R.drawable.search_clear_pressed));
+        mMenuLists.add(new MenuList("地址管理",R.drawable.menu_address));
         mMenuLists.add(new MenuList("订单管理",R.drawable.menu_order));
+        mMenuLists.add(new MenuList("注销",R.drawable.menu_out));
         mhandler = new Handler(){
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -135,6 +161,24 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             intent.setClass(MainActivity.this, OrderMgActivity.class);
                             startActivity(intent);
+                        }
+                        break;
+                    }
+                    case 0:{
+                        if(BaseUserService.getInstatnce().checkUser(MainActivity.this,null)) {
+                            Intent intent = new Intent();
+                            intent.setClass(MainActivity.this, AddressMgActivity.class);
+                            startActivity(intent);
+                        }
+                        break;
+                    }
+                    case 2:{
+                        if(null != BaseUserService.getGsonLogin() &&  BaseUserService.getGsonLogin().isBoolean()){
+                            BaseUserService.logout();
+                            Toast.makeText(MainActivity.this,"注销成功",Toast.LENGTH_SHORT).show();
+                            setTabHostView(IHomeService.HOST_TAB_ID1);
+                        }else {
+                            Toast.makeText(MainActivity.this,"没有登录",Toast.LENGTH_SHORT).show();
                         }
                         break;
                     }

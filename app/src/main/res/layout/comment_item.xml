@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <LinearLayout
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/comment_item_name"
+            android:text="网管"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/comment_item_time"
+            android:paddingLeft="10dp"
+            android:text="1000-1-1"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:textColor="#9c9c9c"
+            android:layout_width="wrap_content"
+            android:gravity="center|left"
+            android:layout_height="match_parent"/>
+        <com.example.weina.bishe.util.view.ScoreView
+            android:id="@+id/comment_item_score"
+            android:layout_width="150dp"
+            android:layout_height="30dp">
+        </com.example.weina.bishe.util.view.ScoreView>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/comment_item_context"
+        android:text="balablablalalalalallala"
+        android:maxLines="4"
+        android:inputType="textMultiLine"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
