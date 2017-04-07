@@ -220,6 +220,7 @@ public class HomeFragment2 extends Fragment {
                                 OrderService.addOrderNotPay(finalAmount, addressId, new OrderService.OrderCallBack() {
                                     @Override
                                     public void callBack(final String datas) {
+                                        //TODO:提示添加是否成功
                                         MainActivity.getHandle().post(new Runnable() {
                                             @Override
                                             public void run() {

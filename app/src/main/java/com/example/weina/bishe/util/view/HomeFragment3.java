@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.controller.AddressMgActivity;
+import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.controller.OrderMgActivity;
+import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 
 /**
@@ -60,7 +62,7 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
 
             @Override
             public void doCancel() {
-
+                MainActivity.getHandle().sendEmptyMessage(IHomeService.HOST_TAB_ID1);
             }
         };
     }
