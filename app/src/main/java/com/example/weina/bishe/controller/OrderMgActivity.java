@@ -17,9 +17,11 @@ import com.example.weina.bishe.service.IOrderService;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
+import com.example.weina.bishe.util.view.GifWaitBg;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -52,6 +54,9 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
      * 适配器  按钮设置回调
      */
     private PayOrderAdapter.OrderButtonCallBack mOrderButtonCallBack;
+
+    //其他
+    private GifWaitBg mGifWaitBg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +156,7 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initView(){
+        mGifWaitBg = (GifWaitBg) findViewById(R.id.order_wait);
         /**
          * 绑定 5个 按钮
          */
@@ -205,6 +211,7 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
     private void updataOver(){
         mPayOrderAdapter.notifyDataSetChanged();
         mXRecyclerView.refreshComplete();
+        mGifWaitBg.setGifGone();
     }
 
     /**
@@ -214,6 +221,8 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         changeButtonBg(view.getId());
+        mGifWaitBg.setGifShow();
+        recyclViewReset();
         switch (view.getId()){
             case R.id.pay_order_btn_all:{
                 mStauts = "";
@@ -331,6 +340,27 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+    }
+    private void recyclViewReset(){
+        try {
+            //反射改变变量
+            Field field = mXRecyclerView.getClass().getDeclaredField("isnomore");
+            Field field2 = mXRecyclerView.getClass().getDeclaredField("previousTotal");
+            Field field3 = mXRecyclerView.getClass().getDeclaredField("mLastY");
+            field.setAccessible(true);
+            field2.setAccessible(true);
+            field3.setAccessible(true);
+
+
+            field.set(mXRecyclerView,false);
+            field2.set(mXRecyclerView,0);
+            field3.set(mXRecyclerView,-1);
+
+        }catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
 }

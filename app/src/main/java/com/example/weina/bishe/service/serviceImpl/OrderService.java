@@ -2,6 +2,7 @@ package com.example.weina.bishe.service.serviceImpl;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.weina.bishe.bean.GsonAddOrder;
 import com.example.weina.bishe.controller.MainActivity;
@@ -145,14 +146,18 @@ public class OrderService implements IOrderService {
 
             @Override
             public void onSuccess(String data){
-                datas.clear();
-                OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.UPDATA_OVER);
-                if(null != data) {
+                if(null != data||!"null".equals(data)) {
                     Gson gson = new Gson();
                     List<OrderEntity> testBean = gson.fromJson(data, new TypeToken<List<OrderEntity>>() {}.getType());
+                    Log.d("testBean","是否为空: "+ (null == testBean));
                     if(null != testBean) {
+                        datas.clear();
                         datas.addAll(testBean);
+                    }else{
+                        datas.clear();
                     }
+                }else {
+                    datas.clear();
                 }
                 OrderMgActivity.getmHandler().sendEmptyMessage(OrderMgActivity.UPDATA_OVER);
             }

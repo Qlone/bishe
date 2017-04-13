@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.controller.AddressMgActivity;
@@ -25,7 +26,9 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
     private TextView mMenuAddress;
     private TextView mMenuOrder;
     private TextView mBalance;
-
+    private TextView mChangePay;
+    private TextView mChangePsw;
+    ChangePsw changePsw;
     private BaseUserService.ButtonBackCall mButtonBackCall;
     private static Handler sHandler;
 
@@ -54,6 +57,18 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
      */
     private void initData(){
         sHandler = new Handler();
+        changePsw = new ChangePsw(getContext());
+        changePsw.setChangePswCallBack(new ChangePsw.ChangePswCallBack() {
+            @Override
+            public void success() {
+                showMsg("修改成功");
+            }
+
+            @Override
+            public void fail() {
+                showMsg("修改失败");
+            }
+        });
         mButtonBackCall = new BaseUserService.ButtonBackCall() {
             @Override
             public void doConfirm() {
@@ -71,6 +86,10 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
      * 初始化view
      */
     private void initView(){
+        mChangePay = (TextView) mView.findViewById(R.id.person_text_changPay);
+        mChangePsw = (TextView) mView.findViewById(R.id.person_text_changPsw);
+        mChangePay.setOnClickListener(this);
+        mChangePsw.setOnClickListener(this);
         mMenuAddress = (TextView) mView.findViewById(R.id.person_address_text);
         mMenuOrder = (TextView) mView.findViewById(R.id.person_order_text);
         mBalance = (TextView) mView.findViewById(R.id.person_balance);
@@ -99,6 +118,15 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 break;
             }
+            case R.id.person_text_changPay:{
+                changePsw.setPayPassword(true);
+                changePsw.show();
+                break;
+            }
+            case R.id.person_text_changPsw:{
+                changePsw.setPayPassword(false);
+                changePsw.show();
+            }
         }
     }
     public void reinit(){
@@ -106,6 +134,14 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
             @Override
             public void run() {
                 mBalance.setText(""+BaseUserService.getGsonLogin().getUserEntity().getBalance());
+            }
+        });
+    }
+    public void showMsg(final String msg){
+        sHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
             }
         });
     }

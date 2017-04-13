@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:context=".controller.OrderMgActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/order_btn_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -20,56 +19,70 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/pay_order_btn_all"
-            android:text="所有订单"
-            style="@style/orderButton"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-        <Button
-            android:id="@+id/pay_order_btn_notPay"
-            android:text="待付款"
-            style="@style/orderButton"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-        <Button
-            android:id="@+id/pay_order_btn_notSend"
-            android:text="待发货"
-            style="@style/orderButton"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-        <Button
-            android:id="@+id/pay_order_btn_notGet"
-            android:text="待收货"
-            style="@style/orderButton"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-        <Button
-            android:id="@+id/pay_order_btn_notComment"
-            android:text="待评价"
-            style="@style/orderButton"
-            android:layout_marginLeft="1dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+                  android:layout_below="@id/order_btn_linear"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  tools:context=".controller.OrderMgActivity">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/pay_order_btn_all"
+                android:text="所有订单"
+                style="@style/orderButton"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/pay_order_btn_notPay"
+                android:text="待付款"
+                style="@style/orderButton"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/pay_order_btn_notSend"
+                android:text="待发货"
+                style="@style/orderButton"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/pay_order_btn_notGet"
+                android:text="待收货"
+                style="@style/orderButton"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/pay_order_btn_notComment"
+                android:text="待评价"
+                style="@style/orderButton"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/pay_order_recycler"
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/pay_order_recycler"
+            android:animateLayoutChanges="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+    </LinearLayout>
+    <com.example.weina.bishe.util.view.GifWaitBg
+        android:layout_below="@id/order_btn_linear"
+        android:id="@+id/order_wait"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.jcodecraeer.xrecyclerview.XRecyclerView>
 
-</LinearLayout>
+    </com.example.weina.bishe.util.view.GifWaitBg>
+</RelativeLayout>

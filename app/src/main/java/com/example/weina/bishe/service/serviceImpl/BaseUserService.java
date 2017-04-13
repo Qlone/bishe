@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -39,6 +40,11 @@ public class BaseUserService implements IBaseUserService{
     public interface ButtonBackCall{
         public void doConfirm();
         public void doCancel();
+    }
+
+    public interface ChangPswCallBack{
+        void onSuccess();
+        void onFail();
     }
 
     @Override
@@ -135,6 +141,52 @@ public class BaseUserService implements IBaseUserService{
     public static void logout(){
         sGsonLogin.setBoolean(false);
         sGsonLogin.setUserEntity(null);
+    }
+    public static void changPayPassword(int oldPsw, int newPsw, final ChangPswCallBack changPswCallBack){
+        String url = StaticString.URL + "/user/changePay?userId="+sGsonLogin.getUserEntity().getUserId()
+                +"&old="+oldPsw
+                +"&new="+newPsw;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                if(null != data && !"null".equals(data)){
+                    Gson gson = new Gson();
+                    UserEntity userEntity = gson.fromJson(data,UserEntity.class);
+                    sGsonLogin.setUserEntity(userEntity);
+                    changPswCallBack.onSuccess();
+                    Log.d("psw","真的进来了");
+                }else {
+                    changPswCallBack.onFail();
+                }
+            }
+            @Override
+            public void onError(String msg) {
+                changPswCallBack.onFail();
+            }
+        });
+    }
+
+    public static void changPassword(String oldPsw, String newPsw, final ChangPswCallBack changPswCallBack){
+        String url = StaticString.URL + "/user/changePsw?userId="+sGsonLogin.getUserEntity().getUserId()
+                +"&old="+oldPsw
+                +"&new="+newPsw;
+        HomeService.getmOkHttpUtil().get(url, new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                if(null != data||!"null".equals(data)){
+                    Gson gson = new Gson();
+                    UserEntity userEntity = gson.fromJson(data,UserEntity.class);
+                    sGsonLogin.setUserEntity(userEntity);
+                    changPswCallBack.onSuccess();
+                }else {
+                    changPswCallBack.onFail();
+                }
+            }
+            @Override
+            public void onError(String msg) {
+                changPswCallBack.onFail();
+            }
+        });
     }
 
 

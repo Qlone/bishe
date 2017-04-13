@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
+                    android:id="@+id/person_text_changPay"
                     style="@style/personMenu"
                     android:text="修改支付密码"
                     android:layout_marginBottom="10dp"
@@ -78,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"/>
                 <TextView
+                    android:id="@+id/person_text_changPsw"
                     style="@style/personMenu"
                     android:text="修改登录密码"
                     android:layout_marginBottom="10dp"
