@@ -56,8 +56,12 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
      * 初始化数据
      */
     private void initData(){
-        sHandler = new Handler();
-        changePsw = new ChangePsw(getContext());
+        if(null == sHandler) {
+            sHandler = new Handler();
+        }
+        if(null == changePsw) {
+            changePsw = new ChangePsw(getContext());
+        }
         changePsw.setChangePswCallBack(new ChangePsw.ChangePswCallBack() {
             @Override
             public void success() {
@@ -130,6 +134,7 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
         }
     }
     public void reinit(){
+        BaseUserService.getInstatnce().update(getContext());
         sHandler.post(new Runnable() {
             @Override
             public void run() {

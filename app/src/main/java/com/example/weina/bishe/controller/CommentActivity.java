@@ -49,6 +49,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.comment_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.comment_toolbar);
         setSupportActionBar(toolbar);
+        SysApplication.getInstance().addActivity(this);
         initData();
         initView();
     }

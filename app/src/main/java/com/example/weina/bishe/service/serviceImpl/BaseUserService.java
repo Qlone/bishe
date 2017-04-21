@@ -9,8 +9,10 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.example.weina.bishe.bean.GsonLogin;
+import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.entity.UserEntity;
 import com.example.weina.bishe.service.IBaseUserService;
+import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.StaticString;
 import com.example.weina.bishe.util.JsonUtil;
 import com.example.weina.bishe.util.OkHttpUtil;
@@ -80,7 +82,9 @@ public class BaseUserService implements IBaseUserService{
             return true;
         }
     }
-
+    public void update(final  Context context){
+        login(sGsonLogin.getUserEntity(),context);
+    }
     private boolean login(final UserEntity userEntity, final Context context) {
         String url = StaticString.URL+"/user/login";
         final GsonLogin gsonLogin = new GsonLogin();
@@ -107,6 +111,7 @@ public class BaseUserService implements IBaseUserService{
                                 Toast.makeText(context,BaseUserService.sGsonLogin.getUserEntity().getUserName()+", welcome back",Toast.LENGTH_SHORT).show();
                             }
                         });
+                        MainActivity.getHandle().sendEmptyMessage(IHomeService.CHANG_USER_NAME);
                         loginDialog.onBackPressed();
                         if(null != mButtonBackCall) {
                             mButtonBackCall.doConfirm();
@@ -141,6 +146,7 @@ public class BaseUserService implements IBaseUserService{
     public static void logout(){
         sGsonLogin.setBoolean(false);
         sGsonLogin.setUserEntity(null);
+        MainActivity.getHandle().sendEmptyMessage(IHomeService.CHANG_USER_NAME);
     }
     public static void changPayPassword(int oldPsw, int newPsw, final ChangPswCallBack changPswCallBack){
         String url = StaticString.URL + "/user/changePay?userId="+sGsonLogin.getUserEntity().getUserId()

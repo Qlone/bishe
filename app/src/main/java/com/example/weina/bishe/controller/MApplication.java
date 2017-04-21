@@ -8,6 +8,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
  * Created by weina on 2017/3/9.
  */
 public class MApplication extends Application {
+
     @Override
     public  void onCreate(){
         super.onCreate();

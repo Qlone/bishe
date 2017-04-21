@@ -8,14 +8,19 @@
 
 package com.example.weina.bishe.bean;
 
+import com.example.weina.bishe.entity.OrderEntity;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by weina on 2017/3/20.
  */
-public class GsonResAddOrder {
+public class GsonResAddOrder implements Serializable {
     List<String> orderName;//订单名字
     List<String> msg;//订单结果 信息
+    List<OrderEntity> mOrdersEntities;
+
 
     public List<String> getOrderName() {
         return orderName;
@@ -31,5 +36,13 @@ public class GsonResAddOrder {
 
     public void setMsg(List<String> msg) {
         this.msg = msg;
+    }
+
+    public List<OrderEntity> getOrdersEntities() {
+        return mOrdersEntities;
+    }
+
+    public void setOrdersEntities(List<OrderEntity> ordersEntities) {
+        mOrdersEntities = ordersEntities;
     }
 }

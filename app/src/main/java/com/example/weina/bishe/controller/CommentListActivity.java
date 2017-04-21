@@ -40,6 +40,7 @@ public class CommentListActivity extends AppCompatActivity {
         setContentView(R.layout.comment_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.commentList_toolbar);
         setSupportActionBar(toolbar);
+        SysApplication.getInstance().addActivity(this);
         initData();
         initView();
     }

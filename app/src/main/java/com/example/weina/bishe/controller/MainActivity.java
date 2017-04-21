@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weina.bishe.R;
@@ -51,9 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private int mImageViewArray[] = {R.drawable.home_button,R.drawable.cart_button,R.drawable.me_button};
     //Tab选项卡的文字
     private String mTextviewArray[] = {"0", "1", "2"};
+    //其他属性
+    private TextView mUserName;
 
-    //主页面
-    private HomeFragment mHomeFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,17 +64,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_tab_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        SysApplication.getInstance().addActivity(this);
         /**
          * 初始化 菜单内容
          */
         initData();
         initView();
+        Log.d("mainActivity","onCreate");
 
     }
     @Override
     public void onBackPressed() {
             if(isBack){
                 super.onBackPressed();
+                SysApplication.getInstance().exit();
             }else{
                 isBack =true;
                 Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
@@ -125,12 +130,17 @@ public class MainActivity extends AppCompatActivity {
                         orderUpdata(position);
                         break;
                     }
+                    case IHomeService.CHANG_USER_NAME:{
+                        setUserName();
+                        break;
+                    }
                 }
                 super.handleMessage(msg);
             }
         };
     }
     private void initView(){
+        //初始化其他
         SlidingMenu menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
         // 设置触摸屏幕的模式
@@ -148,6 +158,15 @@ public class MainActivity extends AppCompatActivity {
 
         MenuAdapter menuAdapter = new MenuAdapter(MainActivity.this,R.layout.main_menu_list,mMenuLists);
         ListView listView = (ListView) findViewById(R.id.menu_list);
+
+        mUserName = (TextView) findViewById(R.id.header_text_userName);
+        //设置监听
+        mUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseUserService.getInstatnce().checkUser(MainActivity.this,null);
+            }
+        });
         listView.setAdapter(menuAdapter);
         /**
          * 菜单管理
@@ -286,4 +305,18 @@ public class MainActivity extends AppCompatActivity {
         mTabHost.setCurrentTab(i);
     }
 
+
+    //设置标题
+    public void setUserName(){
+        mhandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(BaseUserService.getGsonLogin().isBoolean()){
+                    mUserName.setText("您好,"+BaseUserService.getGsonLogin().getUserEntity().getUserName());
+                }else {
+                    mUserName.setText("请登录");
+                }
+            }
+        });
+    }
 }

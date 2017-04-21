@@ -55,6 +55,7 @@ public class AddressMgActivity extends AppCompatActivity {
         setContentView(R.layout.address_manage_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.address_toolbar);
         setSupportActionBar(toolbar);
+        SysApplication.getInstance().addActivity(this);
         initdata();
         initView();
     }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weina.bishe.R;
+import com.example.weina.bishe.bean.GsonResAddOrder;
 import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.CommentService;
@@ -26,6 +27,7 @@ import com.example.weina.bishe.util.view.ChooseNumberView;
 import com.example.weina.bishe.util.view.GifWaitBg;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,8 @@ public class GoodDetailActivity extends AppCompatActivity{
     private double mScore;
     private long mCommentCount;
     private Button mCommentBtn;
+    //标签
+    private LinearLayout mMarkLinear;
     /**
      *
      * 等待条
@@ -85,6 +89,7 @@ public class GoodDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goods_detail);
+        SysApplication.getInstance().addActivity(this);
         initData(savedInstanceState);
         initView();
 
@@ -157,6 +162,7 @@ public class GoodDetailActivity extends AppCompatActivity{
             }
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+        mMarkLinear = (LinearLayout) findViewById(R.id.goods_detail_scroll_linear);
         mCommentBtn =(Button) findViewById(R.id.good_detail_comment);
         mCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,7 +252,7 @@ public class GoodDetailActivity extends AppCompatActivity{
 
     //重新赋值
     private void reinit(){
-        if(mGoodsEntities.size()>0) {
+        if(mGoodsEntities.size()>0){
             mTitle.setText(mGoodsEntities.get(0).getTitle());
             mSales.setText("" + mGoodsEntities.get(0).getViews() + " 人付款");
             mGoodSales.setText("" + mGoodsEntities.get(0).getSales() + " 件售出");
@@ -255,6 +261,13 @@ public class GoodDetailActivity extends AppCompatActivity{
             mStockText.setText("库存数量: " + mGoodsEntities.get(0).getStock());
             mPrice.setText("￥ " + mGoodsEntities.get(0).getPrice());
             getScore();
+            String[] mark = mGoodsEntities.get(0).getType().split("#");
+            for(String name:mark){
+                addMark(name);
+            }
+        }else {
+            Toast.makeText(this,"商品不存在",Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -310,12 +323,16 @@ public class GoodDetailActivity extends AppCompatActivity{
                                 @Override
                                 public void run() {
                                     mGifWaitBg.setGifGone();
-                                    if(null != data) {
+
+                                    Gson gson = new Gson();
+                                    GsonResAddOrder gsonResAddOrder =gson.fromJson(data,GsonResAddOrder.class);
+
+                                    if(gsonResAddOrder.getOrdersEntities().size()>0) {
                                         try {//订单生成完毕 ，开始支付
-                                            int orderId = Integer.parseInt(data);
+
                                             ArrayList<Integer> list = new ArrayList<>();
-                                            list.add(orderId);
-                                            PayActivity.openPay(GoodDetailActivity.this, list);
+                                            list.add(gsonResAddOrder.getOrdersEntities().get(0).getOrdersId());
+                                            PayActivity.openPay(GoodDetailActivity.this, list,gsonResAddOrder);
 
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -399,6 +416,15 @@ public class GoodDetailActivity extends AppCompatActivity{
 
             }
         });
+    }
+    //添加标签
+    private void addMark(String name){
+        if(!"".equals(name)&&null!=name) {
+            final View view = View.inflate(GoodDetailActivity.this, R.layout.goods_mark, null);
+            TextView tv = (TextView) view.findViewById(R.id.good_mark_text);
+            tv.setText(name);
+            mMarkLinear.addView(view);
+        }
     }
 
 }

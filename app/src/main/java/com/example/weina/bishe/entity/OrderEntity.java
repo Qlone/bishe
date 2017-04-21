@@ -1,11 +1,12 @@
 package com.example.weina.bishe.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by weina on 2017/3/13.
  */
-public class OrderEntity {
+public class OrderEntity implements Serializable{
     private Integer mOrdersId;
     private Integer mGoodsId;
     private String mAddress;

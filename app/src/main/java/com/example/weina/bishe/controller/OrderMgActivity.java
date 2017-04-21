@@ -64,6 +64,7 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.order_manage_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.order_toolbar);
         setSupportActionBar(toolbar);
+        SysApplication.getInstance().addActivity(this);
         initData();
         initView();
     }

@@ -106,6 +106,28 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"/>
 
+        <HorizontalScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/goods_detail_scroll_linear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+                <TextView
+                    android:text="标签  : "
+                    android:textSize="15sp"
+                    android:textColor="@color/loginText"
+                    android:layout_width="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
 
     </LinearLayout>
 

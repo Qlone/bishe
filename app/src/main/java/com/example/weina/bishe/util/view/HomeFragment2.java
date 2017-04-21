@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.OrderAdapter;
+import com.example.weina.bishe.bean.GsonResAddOrder;
 import com.example.weina.bishe.controller.AddressMgActivity;
 import com.example.weina.bishe.controller.MainActivity;
 import com.example.weina.bishe.controller.PayActivity;
@@ -23,6 +24,7 @@ import com.example.weina.bishe.service.IOrderService;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
+import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -231,13 +233,15 @@ public class HomeFragment2 extends Fragment {
                                                 /**
                                                  * 打开支付页面
                                                  */
+                                                Gson gson = new Gson();
+                                                GsonResAddOrder gsonResAddOrder = gson.fromJson(datas,GsonResAddOrder.class);
                                                 ArrayList<Integer> list = new ArrayList<Integer>();
                                                 for(OrderEntity orderEntity:data){
                                                     if(orderEntity.isChoose()) {
                                                         list.add(orderEntity.getOrdersId());
                                                     }
                                                 }
-                                                PayActivity.openPay(getContext(),list);
+                                                PayActivity.openPay(getContext(),list,gsonResAddOrder);
 
                                             }
                                         });

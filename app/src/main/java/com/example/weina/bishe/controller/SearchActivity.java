@@ -15,9 +15,11 @@ import android.widget.ListView;
 
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.adapter.HomeAdapter;
+import com.example.weina.bishe.bean.GsonSortApply;
 import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.entity.LableEntity;
 import com.example.weina.bishe.service.ISearchService;
+import com.example.weina.bishe.service.serviceImpl.GoodsService;
 import com.example.weina.bishe.service.serviceImpl.SearchService;
 import com.example.weina.bishe.util.SpacesItemDecoration;
 import com.example.weina.bishe.util.view.SearchView;
@@ -82,7 +84,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
     private static Handler handler = new Handler(Looper.getMainLooper());
     private static Handler mHandler;
     private static int page;
-    private static String title;
+    //搜索
+    private GsonSortApply mGsonSortApply;
     /**
      * 设置提示框显示项的个数
      *
@@ -96,6 +99,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        SysApplication.getInstance().addActivity(this);
         initData();
         initViews();
     }
@@ -123,6 +127,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         //初始化自动补全数据
         getAutoCompleteData(null);
         //获取第一次数据
+        mGsonSortApply =  new GsonSortApply();
+        mGsonSortApply.setTitle("");
 
     }
     /**
@@ -134,6 +140,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         searchView = (SearchView) findViewById(R.id.main_search_layout);
         //设置监听
         searchView.setSearchViewListener(this);
+        searchView.setXRecyclerView(lvResults);
         //设置adapter
         searchView.setTipsHintAdapter(hintAdapter);
         searchView.setAutoCompleteAdapter(autoCompleteAdapter);
@@ -154,15 +161,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
             @Override
             public void onRefresh() {
                 page=1;
-                SearchService.searchGoodByTitle(listData,title);
+                getData();
             }
 
             @Override
             public void onLoadMore() {
-                SearchService.searchGoodByTitle(listData,title);
+                getData();
             }
         });
-        title = "";
         listData = new ArrayList<>();
         mAdapter = new HomeAdapter(listData);
         lvResults.setAdapter(mAdapter);
@@ -187,7 +193,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
             }
         };
         mAdapter.setHandler(mHandler);
-        SearchService.searchGoodByTitle(listData,title);
+        getData();
 
 
         mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
@@ -277,12 +283,11 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
     @Override
     public void onSearch(String text) {
         SearchService.searchLable(text);
-        listData.clear();
         page=1;
-        title = text;
+        mGsonSortApply.setTitle(text);
         //重置 view 使得重新搜索后可以加载更多
         recyclViewReset();
-        SearchService.searchGoodByTitle(listData,text);
+        getData();
 
 
     }
@@ -307,6 +312,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         }catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
+    }
+    private void getData(){
+        mGsonSortApply.setSort(searchView.getSort());
+        mGsonSortApply.setType(searchView.getType());
+        mGsonSortApply.setLable(searchView.getLable());
+        GoodsService.highSearch(listData,mGsonSortApply);
     }
 
     public static int getPage() {

@@ -16,4 +16,6 @@ public interface IHomeService {
     int HOST_TAB_ID2 = 1;
 
     int ORDER_UPDATA =6;
+
+    int CHANG_USER_NAME = 7;
 }

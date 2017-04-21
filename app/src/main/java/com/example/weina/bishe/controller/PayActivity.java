@@ -7,16 +7,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weina.bishe.R;
+import com.example.weina.bishe.bean.GsonResAddOrder;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
 import com.example.weina.bishe.util.view.GifWaitBg;
@@ -29,6 +33,7 @@ import java.util.List;
  */
 public class PayActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String PAY_BUNDLE = "payBundle";
+    public static final String PAY_RES = "payResBundle";
     /**
      * 订单
      */
@@ -52,7 +57,12 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
     private TranslateAnimation mShowAction;
     private TranslateAnimation mHiddenAction;
     private GifWaitBg mGifWaitBg;
-
+    //结果集
+    private GsonResAddOrder mGsonResAddOrder;
+    private LinearLayout mResLinear;
+    private ScrollView mResScroll;
+    private ImageView mResImg;
+    private TextView mResTips;
 
     private static Handler sHandler;
     @Override
@@ -60,10 +70,11 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.pay_toolbar);
+        SysApplication.getInstance().addActivity(this);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         orderIdList = (List<Integer>) intent.getIntegerArrayListExtra(PAY_BUNDLE);
-
+        mGsonResAddOrder = (GsonResAddOrder) intent.getSerializableExtra(PAY_RES);
         initData();
         initView();
     }
@@ -100,6 +111,12 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         /**
          * 绑定ui
          */
+        mResScroll = (ScrollView) findViewById(R.id.pay_result_scroll);
+        mResScroll.setVisibility(View.GONE);
+        mResTips = (TextView) findViewById(R.id.pay_res_tips);
+        mResImg = (ImageView) findViewById(R.id.pay_res_img);
+        mResLinear = (LinearLayout) findViewById(R.id.pay_result);
+        mResLinear.setVisibility(View.GONE);
         mKeyBox = (LinearLayout) findViewById(R.id.key_layout);
         mKeyBox.setAnimation(mShowAction);
         mKeyBox.setVisibility(View.VISIBLE);
@@ -232,11 +249,17 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
                             @Override
                             public void run() {
                                 mGifWaitBg.setGifGone();
+                                String msg="";
                                 if ("true".equals(datas)) {
                                     Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-                                } else {
+                                }else if("noMoney".equals(datas)){
+                                    Toast.makeText(PayActivity.this, "余额不足", Toast.LENGTH_SHORT).show();
+                                    msg = ",余额不足";
+                                }
+                                else {
                                     Toast.makeText(PayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
                                 }
+                                showResult("true".equals(datas),msg);
                             }
                         });
                     }
@@ -255,6 +278,31 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
             }else{
                 mtips.setText("密码错误");
             }
+        }
+    }
+    //显示结果
+    private void showResult(boolean payRes,String msg){
+        mResScroll.setVisibility(View.VISIBLE);
+        mResLinear.setVisibility(View.VISIBLE);
+        if(payRes){
+            mResImg.setImageResource(R.drawable.pay_success);
+            mResTips.setText("支付成功了呢");
+        }else{
+            mResImg.setImageResource(R.drawable.pay_fail);
+            mResTips.setText("支付失败"+msg);
+        }
+        if(null!=mGsonResAddOrder){
+            for(int i =0;i<mGsonResAddOrder.getOrderName().size();i++){
+                View view = View.inflate(PayActivity.this, R.layout.pay_item, null);
+                TextView orderName = (TextView) view.findViewById(R.id.pay_item_order);
+                TextView res = (TextView) view.findViewById(R.id.pay_item_res);
+                orderName.setText(mGsonResAddOrder.getOrderName().get(i));
+                res.setText(mGsonResAddOrder.getMsg().get(i));
+                mResLinear.addView(view);
+                Log.d("payRes","yep"+mGsonResAddOrder.getOrderName().get(i)+"  "+mGsonResAddOrder.getOrderName().get(i));
+            }
+        }else{
+            Log.d("payRes","null");
         }
     }
 
@@ -285,10 +333,13 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     //打开支付页面
-    public static void openPay(Context context,ArrayList<Integer> list){
+    public static void openPay(Context context, ArrayList<Integer> list, GsonResAddOrder gsonResAddOrder){
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putIntegerArrayList(PAY_BUNDLE,list);
+        if(null!=gsonResAddOrder){
+            bundle.putSerializable(PAY_RES,gsonResAddOrder);
+        }
         intent.putExtras(bundle);
         intent.setClass(context,PayActivity.class);
         context.startActivity(intent);
