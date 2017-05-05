@@ -23,6 +23,7 @@ import com.example.weina.bishe.service.IHomeService;
 import com.example.weina.bishe.service.IOrderService;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
+import com.example.weina.bishe.util.Arith;
 import com.example.weina.bishe.util.SpacesItemDecoration;
 import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
@@ -100,7 +101,7 @@ public class HomeFragment2 extends Fragment {
             data = new ArrayList<>();
         }
         if(null == mOrderAdapter){
-            mOrderAdapter = new OrderAdapter(data);
+            mOrderAdapter = new OrderAdapter(data,mView.getContext());
         }
         mButtonBackCall = new BaseUserService.ButtonBackCall() {
             @Override
@@ -305,7 +306,8 @@ public class HomeFragment2 extends Fragment {
         money=0.0;
         for(OrderEntity orderEntity:data){
             if(orderEntity.isChoose())
-                money+=orderEntity.getAmount()*orderEntity.getPrice();
+//                money+=orderEntity.getAmount()*orderEntity.getPrice();
+                money = Arith.add(money,Arith.mul(orderEntity.getAmount(),orderEntity.getPrice()));
         }
         mTotalMoney.setText("总价: ￥ "+money);
     }

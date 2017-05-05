@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.AddressEntity;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
+import com.example.weina.bishe.util.Arith;
 
 /**
  * Created by weina on 2017/3/17.
@@ -90,7 +91,7 @@ public class AddressConfirmView extends Dialog {
         mPhoneView.setText(" 收货电话 :"+mAddressEntity.getPhone());
         mReviverView.setText(" 收 货 人 :"+mAddressEntity.getName());
         mAmountView.setText("购买数量 : "+mAmount);
-        mPriceView.setText("总价 ￥："+mPrice);
+        mPriceView.setText("总价 ￥："+ Arith.round(mPrice,2));
 
 
         mCancel.setOnClickListener(new clickListener());

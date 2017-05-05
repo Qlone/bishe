@@ -42,7 +42,12 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
         ViewGroup viewGroup = (ViewGroup) mView.getParent();
         if(BaseUserService.getInstatnce().checkUser(mView.getContext(), mButtonBackCall)) {
             //检测是否登录
-            reinit();
+            BaseUserService.getInstatnce().update(new BaseUserService.UpdataCallBack() {
+                @Override
+                public void onSuccess() {
+                    reinit();
+                }
+            });
         }else {
             onDestroy();
         }
@@ -134,7 +139,6 @@ public class HomeFragment3 extends Fragment implements View.OnClickListener{
         }
     }
     public void reinit(){
-        BaseUserService.getInstatnce().update(getContext());
         sHandler.post(new Runnable() {
             @Override
             public void run() {

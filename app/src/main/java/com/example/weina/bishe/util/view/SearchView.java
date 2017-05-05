@@ -333,7 +333,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
 //        void onTipsItemClick(String text);
     }
 
-    private void addMark(String name){
+    public void addMark(String name){
         final View view = View.inflate(mContext, R.layout.layout_mark, null);
         TextView tv = (TextView) view.findViewById(R.id.textView1);
         tv.setText(name);

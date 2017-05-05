@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BiShe.iml" filepath="$PROJECT_DIR$/BiShe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CycleViewPager/CycleViewPager.iml" filepath="$PROJECT_DIR$/CycleViewPager/CycleViewPager.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sliding_mune/sliding_mune.iml" filepath="$PROJECT_DIR$/sliding_mune/sliding_mune.iml" />
     </modules>

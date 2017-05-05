@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.weina.bishe.R;
 import com.example.weina.bishe.entity.GoodsEntity;
 import com.example.weina.bishe.service.StaticString;
+import com.example.weina.bishe.util.Arith;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -58,7 +59,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         viewHolder.mSimpleDraweeView.setController(controller);
 
         viewHolder.mItemSales.setText(datas.get(position).getViews()+"人付款");
-        viewHolder.mItemPrice.setText("￥ "+datas.get(position).getPrice());
+        viewHolder.mItemPrice.setText("￥ "+ Arith.round(datas.get(position).getPrice(),2));
         viewHolder.mItemGoodSales.setText(datas.get(position).getSales()+"件卖出");
         if(null !=datas.get(position).getStatus()) {
             switch (datas.get(position).getStatus()) {

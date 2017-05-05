@@ -1,5 +1,6 @@
 package com.example.weina.bishe.adapter;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.weina.bishe.R;
+import com.example.weina.bishe.controller.GoodDetailActivity;
 import com.example.weina.bishe.entity.OrderEntity;
 import com.example.weina.bishe.service.StaticString;
+import com.example.weina.bishe.util.Arith;
 import com.example.weina.bishe.util.view.ChooseNumberView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
@@ -30,9 +33,10 @@ import java.util.ArrayList;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
 
     private ArrayList<OrderEntity> data = null;
-
-    public OrderAdapter(ArrayList<OrderEntity> data) {
+    private Context mContext;
+    public OrderAdapter(ArrayList<OrderEntity> data,Context context) {
         this.data = data;
+        this.mContext = context;
     }
 
     private ChangeOrderCallBack mChangeOrderCallBack;
@@ -53,7 +57,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm ss");
         holder.mCreateTime.setText("创建时间: "+sdf.format(data.get(position).getCreateTime()));
         holder.mAmount.setText("数量: "+data.get(position).getAmount());
-        holder.mPrice.setText("总价 ￥"+data.get(position).getPrice()*data.get(position).getAmount());
+        holder.mPrice.setText("总价 ￥"+ Arith.mul(data.get(position).getPrice(),data.get(position).getAmount()));
         holder.mTitle.setText(data.get(position).getTitle());
 
         holder.mChooseNumberView.setMaxNumber(100);
@@ -123,6 +127,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
                 .setImageRequest(request)
                 .build();
         holder.mSimpleDraweeView.setController(controller);
+        holder.mSimpleDraweeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoodDetailActivity.openGoodsDeatail(mContext,data.get(position).getGoodsId());
+            }
+        });
     }
 
     @Override

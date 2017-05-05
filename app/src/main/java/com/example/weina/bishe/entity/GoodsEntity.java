@@ -28,6 +28,19 @@ public class GoodsEntity implements Parcelable {
     private String mPictureGroup;
     private boolean downloading = false;
 
+    public GoodsEntity() {
+        type="";
+        price=0.0;
+        title="";
+        picture="";
+        sales=1;
+        stock=1;
+        status="";
+        views=1;
+        goodsDelete=1;
+        mPictureGroup="";
+    }
+
     public String getPictureGroup() {
         return mPictureGroup;
     }

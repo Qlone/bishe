@@ -48,6 +48,13 @@ public class BaseUserService implements IBaseUserService{
         void onSuccess();
         void onFail();
     }
+    public interface RegisterCallBack{
+        void onSuccess(String data);
+        void onFail();
+    }
+    public interface UpdataCallBack{
+        void onSuccess();
+    }
 
     @Override
     public boolean checkUser(final Context context, final ButtonBackCall buttonBackCall) {
@@ -82,8 +89,24 @@ public class BaseUserService implements IBaseUserService{
             return true;
         }
     }
-    public void update(final  Context context){
-        login(sGsonLogin.getUserEntity(),context);
+    public void update(final UpdataCallBack updataCallBack){
+        String url = StaticString.URL+"/user/login";
+        HomeService.getmOkHttpUtil().postJson(url, JsonUtil.toJson(sGsonLogin), new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data) {
+                if(null!=data){
+                    Gson gson = new Gson();
+                    BaseUserService.sGsonLogin = gson.fromJson(data,GsonLogin.class);
+                    if(null !=updataCallBack) {
+                        updataCallBack.onSuccess();
+                    }
+                }
+            }
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
     }
     private boolean login(final UserEntity userEntity, final Context context) {
         String url = StaticString.URL+"/user/login";
@@ -108,7 +131,7 @@ public class BaseUserService implements IBaseUserService{
                             //登录成功后提示
                             @Override
                             public void run() {
-                                Toast.makeText(context,BaseUserService.sGsonLogin.getUserEntity().getUserName()+", welcome back",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,BaseUserService.sGsonLogin.getUserEntity().getUserName()+", 欢迎回来",Toast.LENGTH_SHORT).show();
                             }
                         });
                         MainActivity.getHandle().sendEmptyMessage(IHomeService.CHANG_USER_NAME);
@@ -121,7 +144,7 @@ public class BaseUserService implements IBaseUserService{
                             //登录成功后提示
                             @Override
                             public void run() {
-                                loginDialog.setmMessage(" sign in fail check your password and username ");
+                                loginDialog.setmMessage(" 登录失败请检查用户名和密码 ");
                             }
                         });
                     }
@@ -135,7 +158,7 @@ public class BaseUserService implements IBaseUserService{
                     //登录成功后提示
                     @Override
                     public void run() {
-                        loginDialog.setmMessage(" fail to connect net ");
+                        loginDialog.setmMessage(" 连接网络失败 ");
                     }
                 });
             }
@@ -191,6 +214,19 @@ public class BaseUserService implements IBaseUserService{
             @Override
             public void onError(String msg) {
                 changPswCallBack.onFail();
+            }
+        });
+    }
+    public void rgisterUser(UserEntity userEntity, final RegisterCallBack registerCallBack){
+        String url = StaticString.URL+"/user/register";
+        HomeService.getmOkHttpUtil().postJson(url, JsonUtil.toJson(userEntity), new OkHttpUtil.HttpCallback() {
+            @Override
+            public void onSuccess(String data){
+                registerCallBack.onSuccess(data);
+            }
+            @Override
+            public void onError(String msg) {
+                registerCallBack.onFail();
             }
         });
     }

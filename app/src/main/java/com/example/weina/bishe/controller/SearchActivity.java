@@ -1,5 +1,6 @@
 package com.example.weina.bishe.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,9 @@ import java.util.List;
  * Created by weina on 2017/3/3.
  */
 public class SearchActivity extends AppCompatActivity implements SearchView.SearchViewListener{
+    public static final String LABLE_BUNDL = "lable_bundle";
+    public static final String Title_BUNDL = "title_bundle";
+    private List<String> lableList;
     /**
      * 搜索结果列表view
      */
@@ -128,8 +132,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         getAutoCompleteData(null);
         //获取第一次数据
         mGsonSortApply =  new GsonSortApply();
-        mGsonSortApply.setTitle("");
-
+        lableList = (List<String>)getIntent().getStringArrayListExtra(LABLE_BUNDL);
+        String title = getIntent().getStringExtra(Title_BUNDL);
+        mGsonSortApply.setTitle(null==title  ? "":title);
     }
     /**
      * 初始化视图
@@ -144,7 +149,11 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
         //设置adapter
         searchView.setTipsHintAdapter(hintAdapter);
         searchView.setAutoCompleteAdapter(autoCompleteAdapter);
-
+        if(null!=lableList){
+            for(String name:lableList){
+                searchView.addMark(name);
+            }
+        }
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
 //        staggeredGridLayoutManager.setAutoMeasureEnabled(true);
         lvResults.setLayoutManager(staggeredGridLayoutManager);
@@ -334,5 +343,13 @@ public class SearchActivity extends AppCompatActivity implements SearchView.Sear
 
     public static void setHandler(Handler handler) {
         mHandler = handler;
+    }
+
+    public static void openSearch(Context mContext,String title,ArrayList<String> lableList){
+        Intent intent = new Intent();
+        intent.setClass(mContext,SearchActivity.class);
+        intent.putStringArrayListExtra(LABLE_BUNDL,lableList);
+        intent.putExtra(Title_BUNDL,title);
+        mContext.startActivity(intent);
     }
 }

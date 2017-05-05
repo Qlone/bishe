@@ -1,11 +1,13 @@
 package com.example.weina.bishe.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -22,15 +24,18 @@ import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.CommentService;
 import com.example.weina.bishe.service.serviceImpl.GoodsService;
 import com.example.weina.bishe.service.serviceImpl.OrderService;
+import com.example.weina.bishe.util.Arith;
 import com.example.weina.bishe.util.view.AddressConfirmView;
 import com.example.weina.bishe.util.view.ChooseNumberView;
 import com.example.weina.bishe.util.view.GifWaitBg;
-import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import cn.ifavor.cycleviewpager.view.CycleViewPager;
 
 /**
  * Created by weina on 2017/2/28.
@@ -49,16 +54,18 @@ public class GoodDetailActivity extends AppCompatActivity{
     private TextView mSales;
     private TextView mPrice;
     private TextView mGoodSales;
-
+    private TextView mUpdata;
     private GoodsEntity mGoodsEntity =null;
     private List<GoodsEntity> mGoodsEntities;
-    private SimpleDraweeView mSimpleDraweeView;
-
+   // private SimpleDraweeView mSimpleDraweeView;
+    private CycleViewPager mCycleViewPager;
     /**
      * 选择 购买商品的属性 页面
      */
     private LinearLayout mChoose;
     private ChooseNumberView mChooseNumberView;
+    private SimpleDraweeView mInnerImg;
+    private TextView mInnerText;
     private TextView mStockText;
     private Button mCartButton;
     private Button mBuyButton;
@@ -112,6 +119,14 @@ public class GoodDetailActivity extends AppCompatActivity{
             mAddressConfirmView.reinit();
         }
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCycleViewPager != null){
+            // 取消轮播定时器
+            mCycleViewPager.cancel();
+        }
+    }
     private void initData(Bundle savedInstanceState){
         isBuy =false;
         mGoodsEntities = new ArrayList<>();
@@ -143,6 +158,7 @@ public class GoodDetailActivity extends AppCompatActivity{
             public void handleMessage(Message msg) {
                 switch (msg.what){
                     case UPDATA_OVER:{
+
                         reinit();
                         break;
                     }
@@ -162,6 +178,7 @@ public class GoodDetailActivity extends AppCompatActivity{
             }
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+        mUpdata = (TextView) findViewById(R.id.updata_text);
         mMarkLinear = (LinearLayout) findViewById(R.id.goods_detail_scroll_linear);
         mCommentBtn =(Button) findViewById(R.id.good_detail_comment);
         mCommentBtn.setOnClickListener(new View.OnClickListener() {
@@ -176,17 +193,29 @@ public class GoodDetailActivity extends AppCompatActivity{
             }
         });
 
+        mInnerImg = (SimpleDraweeView) findViewById(R.id.good_detail_inner_img);
+        mInnerText = (TextView) findViewById(R.id.good_detail_inner_title);
+
 
         mTitle = (TextView) findViewById(R.id.good_detail_title);
         mSales = (TextView) findViewById(R.id.good_sales);
         mPrice = (TextView) findViewById(R.id.good_price);
         mGoodSales = (TextView) findViewById(R.id.good_goodsales);
+        mCycleViewPager = (CycleViewPager) findViewById(R.id.cvp_main);
+        mCycleViewPager.setHandler(getmHandler());
+        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+        String url=  "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493891314012&di=1d16bc6a1a00434af60ba246960a15ce&imgtype=0&src=http%3A%2F%2Fwww.9tnl.com%2Fuploadfile%2Fimage%2F20150810%2F20150810225176647664.jpg";
+        map.put("0",url);
+        map.put("1",url);
+        map.put("2",url);
+        map.put("3",url);
+        map.put("4",url);
 
-        mSimpleDraweeView = (SimpleDraweeView) findViewById(R.id.good_detail_img);
-
+        mCycleViewPager.setURLMap(map).setDuration(5000).start();
+       // mSimpleDraweeView = (SimpleDraweeView) findViewById(R.id.good_detail_img);
         //设置对其方式
 
-        mSimpleDraweeView.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
+        //mSimpleDraweeView.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
 
         //设置
         mbg = (TextView) findViewById(R.id.good_detail_bg);
@@ -216,6 +245,7 @@ public class GoodDetailActivity extends AppCompatActivity{
                 }
             }
         });
+
 
         //设置选择数量
         mChooseNumberView = (ChooseNumberView) findViewById(R.id.good_detail_inner_choose);
@@ -247,7 +277,7 @@ public class GoodDetailActivity extends AppCompatActivity{
         Toast.makeText(this,"创建 订单失败 请刷新后重试 ",Toast.LENGTH_SHORT).show();
     }
     private void successShow(){
-        Toast.makeText(this,"购买成功 ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"添加成功 ",Toast.LENGTH_SHORT).show();
     }
 
     //重新赋值
@@ -256,9 +286,31 @@ public class GoodDetailActivity extends AppCompatActivity{
             mTitle.setText(mGoodsEntities.get(0).getTitle());
             mSales.setText("" + mGoodsEntities.get(0).getViews() + " 人付款");
             mGoodSales.setText("" + mGoodsEntities.get(0).getSales() + " 件售出");
-            mSimpleDraweeView.setImageURI(mGoodsEntities.get(0).getPicture());
+            //mSimpleDraweeView.setImageURI(mGoodsEntities.get(0).getPicture());
+
+            /**
+             * 新的
+             */
+            LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+            String[] pictureGroup = mGoodsEntities.get(0).getPictureGroup().split("#");
+            int size = pictureGroup[0].equals("") ? 0:pictureGroup.length;
+            for(int i = 0;i<size;i++){
+                map.put(""+i,pictureGroup[i]);
+            }
+            Log.d("size",""+size);
+            for(int i= 4;0 < i - size;i-- ){
+                map.put("图片"+(4-i),"http://img1.imgtn.bdimg.com/it/u=4117648042,1641766855&fm=23&gp=0.jpg");
+            }
+            Log.d("Mapsize",""+map.size());
+            mCycleViewPager.setResIdMap(null);
+            mCycleViewPager.setURLMap(map).setDuration(5000).start();
+            mUpdata.setVisibility(View.GONE);
+//            mCycleViewPager.invalidate();
+
             mChooseNumberView.setMaxNumber(mGoodsEntities.get(0).getStock());
             mStockText.setText("库存数量: " + mGoodsEntities.get(0).getStock());
+            mInnerImg.setImageURI(mGoodsEntities.get(0).getPicture());
+            mInnerText.setText(mGoodsEntities.get(0).getTitle());
             mPrice.setText("￥ " + mGoodsEntities.get(0).getPrice());
             getScore();
             String[] mark = mGoodsEntities.get(0).getType().split("#");
@@ -309,7 +361,7 @@ public class GoodDetailActivity extends AppCompatActivity{
         });
     }
     private void buy(){
-        mAddressConfirmView = new AddressConfirmView(GoodDetailActivity.this,mChooseNumberView.getNumber(),mGoodsEntity.getPrice()*mChooseNumberView.getNumber());
+        mAddressConfirmView = new AddressConfirmView(GoodDetailActivity.this,mChooseNumberView.getNumber(), Arith.mul(mGoodsEntities.get(0).getPrice(),mChooseNumberView.getNumber()));
         mAddressConfirmView.setAddressCallBack(new AddressConfirmView.AddressCallBack() {
             @Override
             public void confirm(int addressId) {
@@ -426,5 +478,12 @@ public class GoodDetailActivity extends AppCompatActivity{
             mMarkLinear.addView(view);
         }
     }
-
+    public static void openGoodsDeatail(Context mContext, int goodsId){
+        GoodsEntity goodsEntity = new GoodsEntity();
+        goodsEntity.setGoodsId(goodsId);
+        Intent intent = new Intent();
+        intent.setClass(mContext,GoodDetailActivity.class);
+        intent.putExtra(MainActivity.GOOD_BUNDLE,goodsEntity);
+        mContext.startActivity(intent);
+    }
 }

@@ -25,9 +25,11 @@ import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.util.view.HomeFragment;
 import com.example.weina.bishe.util.view.HomeFragment2;
 import com.example.weina.bishe.util.view.HomeFragment3;
+import com.example.weina.bishe.util.view.RegisterDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by weina on 2017/2/12.
@@ -49,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
     private Class fragmentArray[] = {HomeFragment.class,HomeFragment2.class,HomeFragment3.class};
 
     //定义数组来存放按钮图片
-    private int mImageViewArray[] = {R.drawable.home_button,R.drawable.cart_button,R.drawable.me_button};
+    private int mImageViewArray[] = {R.drawable.home_button1,R.drawable.cart_button1,R.drawable.me_button1};
     //Tab选项卡的文字
     private String mTextviewArray[] = {"0", "1", "2"};
     //其他属性
     private TextView mUserName;
-
+    private List<ImageView> imageList = new ArrayList<ImageView>();
 
 
     @Override
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         mMenuLists.add(new MenuList("地址管理",R.drawable.menu_address));
         mMenuLists.add(new MenuList("订单管理",R.drawable.menu_order));
         mMenuLists.add(new MenuList("注销",R.drawable.menu_out));
+        mMenuLists.add(new MenuList("注册",R.drawable.menu_register));
         mhandler = new Handler(){
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -200,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this,"没有登录",Toast.LENGTH_SHORT).show();
                         }
                         break;
+                    }case 3:{
+                        RegisterDialog registerDialog = new RegisterDialog(MainActivity.this);
+                        registerDialog.show();
                     }
                 }
             }
@@ -226,6 +232,33 @@ public class MainActivity extends AppCompatActivity {
             //设置Tab按钮的背景
             //mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
         }
+
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+// 设置所有选项卡的图片为未选中图片
+                imageList.get(0).setBackgroundResource(R.color.white);
+                imageList.get(1).setBackgroundResource(R.color.white);
+                imageList.get(2).setBackgroundResource(R.color.white);
+
+                if (tabId.equalsIgnoreCase("0")) {
+                    imageList.get(0).setBackgroundResource(R.color.colorPrimaryDark);
+                    // 移动底部背景图片
+                    //moveTopSelect(0);
+                } else if (tabId.equalsIgnoreCase("1")) {
+                    imageList.get(1).setBackgroundResource(R.color.colorPrimaryDark);
+                    // 移动底部背景图片
+                    //moveTopSelect(1);
+                } else if (tabId.equalsIgnoreCase("2")) {
+                    imageList.get(2).setBackgroundResource(R.color.colorPrimaryDark);
+                    // 移动底部背景图片
+                    //moveTopSelect(2);
+                }
+            }
+        });
+        mTabHost.setCurrentTab(0);
+        imageList.get(0).setBackgroundResource(R.color.colorPrimaryDark);
+
     }
 
     //获取 菜单tab
@@ -233,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
         View view = layoutInflater.inflate(R.layout.tab_item_view, null);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.home_fragment_button);
+        imageList.add(imageView);
         imageView.setImageResource(mImageViewArray[index]);
         return view;
     }

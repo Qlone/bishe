@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.weina.bishe.R;
@@ -33,17 +34,18 @@ public class HomeFragment extends Fragment {
     private ArrayList<GoodsEntity> listData;
     private static int page;
     private ImageButton mSearchButton;
+    private ArrayList<Button> mButtons;
     //缓存自身
     private static View mView;
     private Context mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        initData();
         if(null == mView) {
             mView = inflater.inflate(R.layout.main_fragment, null);
             initView(mView);
 
         }
-        initData();
         //        //第一次打开获取数据
         HomeService.getContent(listData);
         //缓存的rootView需要判断是否已经被加过parent， 如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误
@@ -86,6 +88,9 @@ public class HomeFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+        }
+        if(null == mButtons){
+            mButtons = new ArrayList<>();
         }
     }
 
@@ -173,7 +178,26 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        initButton(header);
+    }
 
+    private void initButton(View view){
+        mButtons.add((Button)view.findViewById(R.id.home_head_button_1));
+        mButtons.add((Button)view.findViewById(R.id.home_head_button_2));
+        mButtons.add((Button)view.findViewById(R.id.home_head_button_3));
+        mButtons.add((Button)view.findViewById(R.id.home_head_button_4));
+        mButtons.add((Button)view.findViewById(R.id.home_head_button_5));
+        mButtons.add((Button)view.findViewById(R.id.home_head_button_6));
+        for(final Button button:mButtons){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<String> lable = new ArrayList<String>();
+                    lable.add(button.getText().toString());
+                    SearchActivity.openSearch(view.getContext(),"",lable);
+                }
+            });
+        }
     }
 
     public static int getPage() {

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/good_detail_bt_cart"
-            android:text="cart"
+            android:text="购物车"
             android:textSize="15sp"
             android:background="#ffb52b"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:layout_weight="1"/>
         <Button
             android:id="@+id/good_detail_bt_buy"
-            android:text="buy"
+            android:text="直接购买"
             android:textSize="15sp"
             android:background="#ff171f"
             android:layout_height="wrap_content"
@@ -38,14 +38,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <!--<com.facebook.drawee.view.SimpleDraweeView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="240dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:id="@+id/good_detail_img"-->
+            <!--app:placeholderImage="@drawable/login_wait"-->
+            <!--fresco:placeholderImage="@drawable/login_wait"-->
+            <!--fresco:placeholderImageScaleType="fitXY"  />-->
+        <cn.ifavor.cycleviewpager.view.CycleViewPager
+            android:id="@+id/cvp_main"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
             android:layout_weight="1"
-            android:id="@+id/good_detail_img"
-            app:placeholderImage="@drawable/login_wait"
-            fresco:placeholderImage="@drawable/login_wait"
-            fresco:placeholderImageScaleType="fitXY"  />
+            android:layout_height="240dp" />
+        <TextView
+            android:id="@+id/updata_text"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
         <TextView
             android:id="@+id/good_detail_title"
             android:layout_width="match_parent"
@@ -160,7 +169,7 @@
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="300dp">
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/good_detail_inner_img"
                 android:src="@drawable/pay"
                 android:layout_margin="10dp"
@@ -209,7 +218,7 @@
 
         <Button
             android:id="@+id/good_detail_btn_confirm"
-            android:text="confirm"
+            android:text="确认"
             android:textSize="15sp"
             android:background="#ff171f"
             android:layout_height="wrap_content"

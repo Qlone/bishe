@@ -81,7 +81,7 @@ public class OrderMgActivity extends AppCompatActivity implements View.OnClickLi
     private void initData(){
         mStauts = "";
         data = new ArrayList<>();
-        mPayOrderAdapter = new PayOrderAdapter(data);
+        mPayOrderAdapter = new PayOrderAdapter(data,OrderMgActivity.this);
         mHandler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {

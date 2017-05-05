@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/dialog_address_button_cancle"
-            android:text="cancle"
+            android:text="取消"
             android:textSize="15sp"
             android:textColor="@color/whites"
             android:background="#ffb52b"
@@ -21,7 +21,7 @@
             android:layout_weight="1"/>
         <Button
             android:id="@+id/dialog_address_button_confirm"
-            android:text="confirm"
+            android:text="确认"
             android:textSize="15sp"
             android:textColor="@color/whites"
             android:background="#ff171f"

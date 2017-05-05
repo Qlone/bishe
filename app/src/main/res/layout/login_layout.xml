@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/login_button_cancle"
-            android:text="cancle"
+            android:text="取消"
             android:textSize="15sp"
             android:textColor="@color/whites"
             android:background="#ffb52b"
@@ -21,7 +21,7 @@
             android:layout_weight="1"/>
         <Button
             android:id="@+id/login_button_confirm"
-            android:text="confirm"
+            android:text="登录"
             android:textSize="15sp"
             android:textColor="@color/whites"
             android:background="#ff171f"
@@ -81,7 +81,7 @@
         </LinearLayout>
         <TextView
             android:id="@+id/login_text_message"
-            android:text="please sign in !"
+            android:text="请登录！"
             android:padding="10dp"
             android:gravity="center|top"
             android:textColor="@color/red"

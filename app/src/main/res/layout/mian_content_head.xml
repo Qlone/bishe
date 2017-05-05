@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+              android:orientation="vertical"
     android:layout_width="match_parent" android:layout_height="wrap_content">
    <ImageButton
        android:id="@+id/home_search_button"
@@ -8,4 +8,73 @@
        android:layout_width="match_parent"
        android:scaleType="centerCrop"
        android:layout_height="40dp" />
+
+   <LinearLayout
+       android:layout_marginTop="2px"
+       android:layout_marginBottom="2px"
+       android:layout_marginRight="20px"
+       android:layout_marginLeft="20px"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+      <Button
+          android:id="@+id/home_head_button_1"
+          android:text="服装"
+          android:textSize="13sp"
+          android:layout_weight="1"
+          android:layout_marginRight="2px"
+          android:background="@drawable/select_button"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"/>
+      <Button
+          android:id="@+id/home_head_button_2"
+          android:text="电器"
+          android:textSize="13sp"
+          android:layout_weight="1"
+          android:layout_marginRight="2px"
+          android:background="@drawable/select_button"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"/>
+      <Button
+          android:id="@+id/home_head_button_3"
+          android:text="游戏"
+          android:textSize="13sp"
+          android:layout_weight="1"
+          android:background="@drawable/select_button"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"/>
+   </LinearLayout>
+   <LinearLayout
+       android:layout_marginBottom="2px"
+       android:layout_marginRight="20px"
+       android:layout_marginLeft="20px"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+      <Button
+          android:id="@+id/home_head_button_4"
+          android:text="电子产品"
+          android:textSize="13sp"
+          android:layout_weight="1"
+          android:layout_marginRight="2px"
+          android:background="@drawable/select_button"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"/>
+      <Button
+          android:id="@+id/home_head_button_5"
+          android:text="联想"
+          android:textSize="13sp"
+          android:layout_weight="1"
+          android:layout_marginRight="2px"
+          android:background="@drawable/select_button"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"/>
+      <Button
+          android:id="@+id/home_head_button_6"
+          android:text="天猫"
+          android:textSize="13sp"
+          android:layout_weight="1"
+          android:background="@drawable/select_button"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"/>
+   </LinearLayout>
+
 </LinearLayout>

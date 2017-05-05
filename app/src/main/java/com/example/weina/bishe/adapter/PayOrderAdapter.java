@@ -1,5 +1,6 @@
 package com.example.weina.bishe.adapter;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.weina.bishe.R;
+import com.example.weina.bishe.controller.GoodDetailActivity;
 import com.example.weina.bishe.entity.OrderEntity;
+import com.example.weina.bishe.service.IOrderService;
 import com.example.weina.bishe.service.StaticString;
+import com.example.weina.bishe.util.Arith;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -28,9 +32,10 @@ import java.util.ArrayList;
 public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHolder>{
     private ArrayList<OrderEntity> data = null;
     private OrderButtonCallBack mOrderButtonCallBack;
-
-    public PayOrderAdapter(ArrayList<OrderEntity> data) {
+    private Context mContext;
+    public PayOrderAdapter(ArrayList<OrderEntity> data,Context context) {
         this.data = data;
+        this.mContext = context;
     }
 
     /**
@@ -49,7 +54,7 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm ss");
         holder.mCreateTime.setText("创建时间: "+sdf.format(data.get(position).getCreateTime()));
         if(null!=data.get(position).getPaidTime()) {
@@ -58,13 +63,38 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
             holder.mPaidTime.setText("");
         }
         holder.mAmount.setText("数量: "+data.get(position).getAmount());
-        holder.mPrice.setText("总价 ￥"+data.get(position).getPrice()*data.get(position).getAmount());
+        holder.mPrice.setText("总价 ￥"+ Arith.mul(data.get(position).getPrice(),data.get(position).getAmount()));
         // 标题，收货地址，收货手机，收货人，状态
         holder.mTitle.setText(data.get(position).getTitle());
-        holder.mAddress.setText(data.get(position).getAddress());
-        holder.mPhone.setText(data.get(position).getPhone());
-        holder.mReciver.setText(data.get(position).getReciver());
-        holder.mStatus.setText(data.get(position).getStatus());
+        holder.mAddress.setText("地址    :"+data.get(position).getAddress());
+        holder.mPhone.setText("手机    :"+data.get(position).getPhone());
+        holder.mReciver.setText("收货人:"+data.get(position).getReciver());
+
+        switch (data.get(position).getStatus()) {
+            case IOrderService.ORDER_STATUS_COMMENT:{
+                holder.mStatus.setText("已完成");
+                break;
+            }
+            case IOrderService.ORDER_STATUS_NOPAY:{
+                holder.mStatus.setText("未付款");
+                break;
+            }
+            case IOrderService.ORDER_STATUS_ONWAY:{
+                holder.mStatus.setText("正在发货");
+                break;
+            }
+            case IOrderService.ORDER_STATUS_PAID:{
+                holder.mStatus.setText("等待发货");
+                break;
+            }
+            case IOrderService.ORDER_STATUS_GET:{
+                holder.mStatus.setText("未评论");
+                break;
+            }
+            default:
+                holder.mStatus.setText("");
+                break;
+        }
         /**
          * 设置按钮
          */
@@ -87,6 +117,12 @@ public class PayOrderAdapter extends RecyclerView.Adapter<PayOrderAdapter.ViewHo
                 .setImageRequest(request)
                 .build();
         holder.mSimpleDraweeView.setController(controller);
+        holder.mSimpleDraweeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoodDetailActivity.openGoodsDeatail(mContext,data.get(position).getGoodsId());
+            }
+        });
     }
 
     @Override
