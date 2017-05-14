@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <EditText
+        android:layout_margin="10dp"
+        android:id="@+id/setIp"
+        android:hint="请输入需要修改的ip"
+        android:background="@drawable/select_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/setComfirm"
+            android:text="确认"
+            android:textSize="14sp"
+            android:layout_gravity="bottom"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+</LinearLayout>

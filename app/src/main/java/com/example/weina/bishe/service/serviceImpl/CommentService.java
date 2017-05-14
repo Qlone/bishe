@@ -1,5 +1,7 @@
 package com.example.weina.bishe.service.serviceImpl;
 
+import android.util.Log;
+
 import com.example.weina.bishe.controller.CommentListActivity;
 import com.example.weina.bishe.entity.CommentEntity;
 import com.example.weina.bishe.service.ICommentService;
@@ -32,6 +34,7 @@ public class CommentService implements ICommentService {
 
             @Override
             public void onError(String msg) {
+                Log.d("commentError",msg);
                 commentServiceCallBack.onError();
             }
         });

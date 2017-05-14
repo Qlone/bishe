@@ -12,7 +12,7 @@
             <TextView
                 android:id="@+id/person_balanceName"
                 android:text="余额: ￥"
-                android:textSize="40sp"
+                android:textSize="35sp"
                 android:padding="10dp"
                 android:textColor="@color/white"
                 android:layout_centerInParent="true"
@@ -22,7 +22,7 @@
             <TextView
                 android:id="@+id/person_balance"
                 android:text="100"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="@color/white"

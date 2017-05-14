@@ -267,6 +267,7 @@ public class GoodDetailActivity extends AppCompatActivity{
         mGifWaitBg = (GifWaitBg) findViewById(R.id.good_detail_gifView);
         //获取数据
         GoodsService.getGoodsDetail(mGoodsEntity.getGoodsId(),mGoodsEntities);
+        mGifWaitBg.setGifShow();
     }
 
     private void existGoods(){
@@ -282,6 +283,7 @@ public class GoodDetailActivity extends AppCompatActivity{
 
     //重新赋值
     private void reinit(){
+        mGifWaitBg.setGifGone();
         if(mGoodsEntities.size()>0){
             mTitle.setText(mGoodsEntities.get(0).getTitle());
             mSales.setText("" + mGoodsEntities.get(0).getViews() + " 人付款");

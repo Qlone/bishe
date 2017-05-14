@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,8 +19,6 @@ import com.example.weina.bishe.entity.CommentEntity;
 import com.example.weina.bishe.service.serviceImpl.BaseUserService;
 import com.example.weina.bishe.service.serviceImpl.CommentService;
 import com.example.weina.bishe.util.view.ScoreView;
-
-import java.util.Date;
 
 /**
  * Created by weina on 2017/3/28.
@@ -78,7 +77,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onError() {
-                showMsg("网络错误");
+                Log.d("??","start");
+                showMsg("网络错误了");
             }
         };
         sHandler = new Handler();
@@ -106,7 +106,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     commentEntity.setUserId(BaseUserService.getGsonLogin().getUserEntity().getUserId());
                     commentEntity.setOrderId(orderId);
                     commentEntity.setGoodsId(goodsId);
-                    commentEntity.setCommentData(new Date());
+                    //commentEntity.setCommentData(new Date());
                     commentEntity.setContext(mEditText.getText().toString());
                     commentEntity.setStart(mScoreView.getScore());
                     //发送请求

@@ -116,7 +116,7 @@ public class LoginDialog extends Dialog {
             int id = v.getId();
             switch (id) {
                 case R.id.login_button_confirm: {
-                    mMessage.setText(" signing ......");
+                    mMessage.setText(" 登录中 ......");
                     clickListenerInterface.doConfirm(mUserName.getText().toString(),mPassword.getText().toString());
                     break;
                 }

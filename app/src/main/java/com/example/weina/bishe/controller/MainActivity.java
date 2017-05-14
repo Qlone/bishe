@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         mMenuLists.add(new MenuList("订单管理",R.drawable.menu_order));
         mMenuLists.add(new MenuList("注销",R.drawable.menu_out));
         mMenuLists.add(new MenuList("注册",R.drawable.menu_register));
+        mMenuLists.add(new MenuList("设置",R.drawable.menu_set));
         mhandler = new Handler(){
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -206,6 +207,12 @@ public class MainActivity extends AppCompatActivity {
                     }case 3:{
                         RegisterDialog registerDialog = new RegisterDialog(MainActivity.this);
                         registerDialog.show();
+                        break;
+                    }case 4:{
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, SetActivity.class);
+                        startActivity(intent);
+                        break;
                     }
                 }
             }
